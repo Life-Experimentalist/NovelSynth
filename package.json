@@ -1,0 +1,116 @@
+{
+  "name": "novelsynth",
+  "version": "1.0.0",
+  "description": "AI-powered content enhancement for web novels, articles, and long-form content",
+  "main": "dist/background.js",
+  "scripts": {
+    "build": "webpack --mode=production",
+    "build:dev": "webpack --mode=development",
+    "watch": "webpack --mode=development --watch",
+    "clean": "rimraf dist",
+    "test": "node test-extension.js",
+    "test:types": "npx tsc --noEmit",
+    "sync:metadata": "node build/sync-metadata.js",
+    "sync:check": "node build/sync-metadata.js --check",
+    "build:extension": "node build/build.js",
+    "build:full": "npm run sync:metadata && npm run build:extension",
+    "package:chrome": "npm run build && cd dist && zip -r ../novelsynth-chrome.zip .",
+    "package:firefox": "npm run build && cd dist && zip -r ../novelsynth-firefox.zip ."
+  },
+  "keywords": [
+    "browser-extension",
+    "ai",
+    "content-enhancement",
+    "web-novels",
+    "reading"
+  ],
+  "author": "NovelSynth Team",
+  "license": "MIT",
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/novelsynth.git"
+  },
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "content.css"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "*.css",
+        "*.js",
+        "*.png",
+        "*.svg"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "novel-synth@VKrishna04.com"
+    }
+  },
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.27.4",
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
+    "@types/chrome": "^0.0.277",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.5",
+    "babel-loader": "^10.0.0",
+    "copy-webpack-plugin": "^13.0.0",
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "rimraf": "^6.0.1",
+    "style-loader": "^4.0.0",
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1"
+  }
+}
