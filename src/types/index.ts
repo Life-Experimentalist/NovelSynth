@@ -1,12 +1,37 @@
 export interface ContentAnalysis {
   isLongForm: boolean;
-  contentType: "novel" | "article" | "news" | "technical" | "generic";
+  contentType: ContentType;
   wordCount: number;
   readingTime: number;
   title?: string;
   author?: string;
   novelTitle?: string;
   confidence: number;
+}
+
+export type ContentType =
+  | "novel"
+  | "article"
+  | "news"
+  | "technical"
+  | "generic";
+
+export type EnhancementType =
+  | "improve"
+  | "grammar"
+  | "style"
+  | "clarity"
+  | "expand"
+  | "condense";
+
+export interface EnhancementOptions {
+  contentType?: ContentType;
+  enhancementType?: EnhancementType;
+  customPrompt?: string;
+  preserveFormatting?: boolean;
+  model?: string;
+  temperature?: number;
+  maxTokens?: number;
 }
 
 export interface AIProvider {
@@ -16,7 +41,8 @@ export interface AIProvider {
   requiresAuth: boolean;
   authType: "api_key" | "oauth" | "none";
   features: string[];
-  models?: AIModel[];
+  models?: string[];
+  defaultModel?: string;
 }
 
 export interface AIModel {
@@ -37,6 +63,12 @@ export interface AIResponse {
   error?: string;
   processingTime?: number;
   stats?: WordCountStats;
+  originalLength?: number;
+  enhancedLength?: number;
+  compressionRatio?: number;
+  model?: string;
+  timestamp?: string;
+  originalContent?: string;
 }
 
 export interface WordCountStats {
@@ -152,4 +184,57 @@ export interface SegmentationOptions {
   preserveImages: boolean;
   preserveFormatting: boolean;
   overlapSize: number;
+}
+
+export interface ContentStorage {
+  pageUrl: string;
+  originalContent: string;
+  enhancedContent?: string;
+  summary?: string;
+  timestamp: number;
+  contentHash: string;
+  contentType: ContentType;
+  websiteId: string;
+}
+
+export interface StorageManager {
+  saveContent(content: ContentStorage): Promise<void>;
+  getContent(pageUrl: string): Promise<ContentStorage | null>;
+  clearContent(pageUrl: string): Promise<void>;
+  clearAllContent(): Promise<void>;
+  getStorageStats(): Promise<StorageStats>;
+}
+
+export interface StorageStats {
+  totalItems: number;
+  totalSize: number; // in bytes
+  oldestItem?: number; // timestamp
+  newestItem?: number; // timestamp
+}
+
+export interface ContentToggleState {
+  isShowingEnhanced: boolean;
+  hasEnhancedContent: boolean;
+  hasSummary: boolean;
+  isProcessing: boolean;
+}
+
+export interface ProcessingResult {
+  success: boolean;
+  originalContent?: string;
+  enhancedContent?: string;
+  error?: string;
+  metadata?: {
+    title?: string;
+    contentType?: ContentType;
+    timestamp?: string;
+    wordCount?: number;
+    enhancementType?: string;
+  };
+}
+
+export interface ContentState {
+  pageKey: string;
+  state: "original" | "enhanced";
+  timestamp: string;
 }

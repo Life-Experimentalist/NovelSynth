@@ -2,28 +2,41 @@
   "compilerOptions": {
     "target": "ES2020",
     "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES6"
+      "ES2020",
+      "DOM"
     ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": false,
+    "noImplicitOverride": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": [
+      "chrome",
+      "node"
+    ]
   },
   "include": [
-    "src"
+    "src/**/*",
+    "types/**/*"
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "scripts"
   ]
 }

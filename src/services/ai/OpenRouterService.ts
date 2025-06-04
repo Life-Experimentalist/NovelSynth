@@ -1,5 +1,5 @@
 import { BaseAIService } from "./BaseAIService";
-import type { AIProvider, AIResponse } from "../../types";
+import type { AIProvider, AIResponse, EnhancementOptions } from "../../types";
 import { WordCounter } from "../../utils/WordCounter";
 
 export class OpenRouterService extends BaseAIService {
@@ -161,18 +161,31 @@ export class OpenRouterService extends BaseAIService {
       };
     }
   }
-
   async enhance(
     content: string,
-    prompt: string,
-    options?: any
+    options: EnhancementOptions = {}
   ): Promise<AIResponse> {
     this.validateApiKey();
 
+    const {
+      contentType = "generic",
+      enhancementType = "improve",
+      customPrompt,
+      preserveFormatting = true,
+      model = "meta-llama/llama-3.2-3b-instruct:free",
+    } = options;
+
     const startTime = Date.now();
-    const model = options?.model || "meta-llama/llama-3.2-3b-instruct:free";
 
     try {
+      const prompt = this.buildEnhancementPrompt(
+        content,
+        contentType,
+        enhancementType,
+        customPrompt,
+        preserveFormatting
+      );
+
       const response = await this.makeRequest(
         `${this.provider.apiEndpoint}/chat/completions`,
         {
@@ -204,15 +217,69 @@ export class OpenRouterService extends BaseAIService {
 
       return {
         enhanced: enhancedContent,
+        originalLength: content.length,
+        enhancedLength: enhancedContent.length,
+        model: model,
+        timestamp: new Date().toISOString(),
         processingTime,
         stats,
       };
     } catch (error) {
       return {
-        error: `Failed to enhance content: ${
+        error: `Enhancement failed: ${
           error instanceof Error ? error.message : "Unknown error"
         }`,
+        originalContent: content,
       };
     }
+  }
+
+  /**
+   * Build enhancement prompt based on content type and options
+   */
+  private buildEnhancementPrompt(
+    content: string,
+    contentType: string,
+    enhancementType: string,
+    customPrompt?: string,
+    preserveFormatting = true
+  ): string {
+    if (customPrompt) {
+      return `${customPrompt}\n\nContent to enhance:\n${content}`;
+    }
+
+    const basePrompts: { [key: string]: string } = {
+      novel:
+        "Enhance this novel/fiction content by improving readability, flow, and narrative quality while maintaining the author's voice and style.",
+      article:
+        "Improve this article by enhancing clarity, structure, and engagement while maintaining factual accuracy.",
+      news: "Enhance this news content by improving clarity and readability while maintaining journalistic integrity.",
+      technical:
+        "Improve this technical content by enhancing clarity, accuracy, and accessibility while maintaining technical precision.",
+      generic:
+        "Enhance this content by improving readability, clarity, and overall quality.",
+    };
+
+    const enhancementTypes: { [key: string]: string } = {
+      improve: "Focus on overall improvement",
+      grammar: "Focus primarily on grammar and syntax corrections",
+      style: "Focus on improving writing style and flow",
+      clarity: "Focus on making the content clearer and more understandable",
+      expand: "Expand on ideas and add more detail where appropriate",
+      condense: "Make the content more concise while retaining key information",
+    };
+
+    let prompt = `${basePrompts[contentType] || basePrompts.generic}. ${
+      enhancementTypes[enhancementType] || enhancementTypes.improve
+    }.`;
+
+    if (preserveFormatting) {
+      prompt +=
+        " Preserve the original formatting, structure, and any special elements like dialogue, emphasis, or line breaks.";
+    }
+
+    prompt += `\n\nContent to enhance:\n${content}`;
+
+    return prompt;
   }
 }

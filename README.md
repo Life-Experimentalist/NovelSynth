@@ -51,17 +51,17 @@ NovelSynth is a cross-browser extension (Firefox/Chrome) that detects long-form 
 #### Build from Source
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/novelsynth.git
+git clone https://github.com/LifeExperimentalist/novelsynth.git
 cd novelsynth
 
 # Install dependencies
 npm install
 
-# Build for development
+# Sync metadata and build for development
 npm run build:dev
 
-# Build for production
-npm run build
+# Build production release packages
+npm run build:full
 
 # Watch mode for development
 npm run watch
@@ -227,9 +227,9 @@ Licensed under the Apache 2.0 License. See [LICENSE](LICENSE) for details.
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/novelsynth/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/novelsynth/discussions)
-- **Email**: support@novelsynth.com
+- **Issues**: [GitHub Issues](https://github.com/LifeExperimentalist/novelsynth/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/LifeExperimentalist/novelsynth/discussions)
+- **Documentation**: [GitHub Pages](https://life-experimentalist.github.io/novelsynth)
 
 ---
 

@@ -3,10 +3,11 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
+  mode: "production",
   entry: {
-    popup: "./src/popup/index.tsx",
-    content: "./src/content/index.ts",
-    background: "./src/background/index.ts",
+    background: "./src/background.ts",
+    content: "./src/content.ts",
+    popup: "./src/popup.ts",
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -16,15 +17,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(ts|tsx)$/,
-        use: [
-          {
-            loader: "babel-loader",
-            options: {
-              presets: ["@babel/preset-react", "@babel/preset-typescript"],
-            },
-          },
-        ],
+        test: /\.tsx?$/,
+        use: "ts-loader",
         exclude: /node_modules/,
       },
       {
@@ -37,28 +31,13 @@ module.exports = {
     extensions: [".tsx", ".ts", ".js"],
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: "./src/popup/popup.html",
-      filename: "popup.html",
-      chunks: ["popup"],
-    }),
     new CopyWebpackPlugin({
       patterns: [
-        {
-          from: "manifest.json",
-          to: "manifest.json",
-        },
-        {
-          from: "src/icons",
-          to: "icons",
-        },
-        {
-          from: "src/content/content.css",
-          to: "content.css",
-        },
+        { from: "manifest.json", to: "manifest.json" },
+        { from: "popup.html", to: "popup.html" },
+        { from: "icons", to: "icons", noErrorOnMissing: true },
       ],
     }),
   ],
-  mode: process.env.NODE_ENV === "production" ? "production" : "development",
-  devtool: process.env.NODE_ENV === "production" ? false : "source-map",
+  devtool: "cheap-module-source-map",
 };

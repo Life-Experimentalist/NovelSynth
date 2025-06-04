@@ -1,4 +1,6 @@
 import { WordCounter, WordCountStats } from "../utils/WordCounter";
+import { StorageManager } from "../utils/StorageManager";
+import type { ContentToggleState } from "../types";
 
 export interface BannerConfig {
   provider: string;
@@ -10,9 +12,11 @@ export interface BannerConfig {
 export class ProcessingBanner {
   private bannerElement: HTMLElement | null = null;
   private config: BannerConfig;
+  private currentUrl: string;
 
   constructor(config: BannerConfig) {
     this.config = config;
+    this.currentUrl = window.location.href;
   }
 
   /**
@@ -206,6 +210,219 @@ export class ProcessingBanner {
   }
 
   /**
+   * Show toggle banner with content switch functionality
+   */
+  async showToggleBanner(
+    contentElement: Element,
+    hasEnhancedContent: boolean = false,
+    hasSummary: boolean = false
+  ): Promise<void> {
+    if (!this.config.showProcessingBanner) {
+      return;
+    }
+
+    this.removeBanner();
+
+    const toggleState = await StorageManager.getToggleState(this.currentUrl);
+    const isShowingEnhanced = toggleState?.isShowingEnhanced || false;
+
+    const banner = this.createBannerElement();
+    banner.classList.add("toggle-banner");
+
+    banner.innerHTML = `
+      <div class="novelsynth-banner-content">
+        <div class="novelsynth-banner-header">
+          <span class="novelsynth-banner-title">📖 NovelSynth Content</span>
+          <div class="novelsynth-banner-actions">
+            <button
+              class="novelsynth-toggle-btn ${
+                !isShowingEnhanced ? "active" : ""
+              }"
+              data-view="original"
+              ${!hasEnhancedContent ? "disabled" : ""}
+              title="Show original content"
+            >
+              Original
+            </button>
+            <button
+              class="novelsynth-toggle-btn ${isShowingEnhanced ? "active" : ""}"
+              data-view="enhanced"
+              ${!hasEnhancedContent ? "disabled" : ""}
+              title="Show enhanced content"
+            >
+              Enhanced
+            </button>
+            ${
+              hasSummary
+                ? `
+              <button
+                class="novelsynth-toggle-btn"
+                data-view="summary"
+                title="Show summary"
+              >
+                Summary
+              </button>
+            `
+                : ""
+            }
+            <span class="novelsynth-banner-close" title="Close">&times;</span>
+          </div>
+        </div>
+        <div class="novelsynth-banner-status">
+          <div class="status-indicator">
+            <span class="status-label">Current View:</span>
+            <span class="status-value">${
+              isShowingEnhanced ? "Enhanced" : "Original"
+            }</span>
+          </div>
+          <div class="status-indicator">
+            <span class="status-label">Provider:</span>
+            <span class="status-value">${this.config.provider}</span>
+          </div>
+          <div class="status-indicator">
+            <span class="status-label">Model:</span>
+            <span class="status-value">${this.config.model}</span>
+          </div>
+        </div>
+      </div>
+    `;
+
+    this.insertBanner(contentElement, banner);
+    this.setupToggleBannerEvents(banner, contentElement);
+  }
+
+  /**
+   * Setup toggle banner event handlers
+   */
+  private setupToggleBannerEvents(
+    banner: HTMLElement,
+    contentElement: Element
+  ): void {
+    // Close button
+    const closeBtn = banner.querySelector(".novelsynth-banner-close");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => {
+        this.removeBanner();
+      });
+    }
+
+    // Toggle buttons
+    const toggleBtns = banner.querySelectorAll(".novelsynth-toggle-btn");
+    toggleBtns.forEach((btn) => {
+      btn.addEventListener("click", async (e) => {
+        const target = e.target as HTMLButtonElement;
+        const view = target.dataset.view;
+
+        if (target.disabled) return;
+
+        // Update button states
+        toggleBtns.forEach((b) => b.classList.remove("active"));
+        target.classList.add("active");
+
+        // Handle content switching
+        await this.handleContentToggle(view, contentElement);
+
+        // Update status display
+        this.updateStatusDisplay(banner, view);
+      });
+    });
+  }
+
+  /**
+   * Handle content toggle between original, enhanced, and summary
+   */
+  private async handleContentToggle(
+    view: string | undefined,
+    contentElement: Element
+  ): Promise<void> {
+    if (!view) return;
+
+    const storedContent = await StorageManager.getStoredContentForUrl(
+      this.currentUrl
+    );
+    if (!storedContent) return;
+
+    try {
+      let contentToShow = "";
+      let isShowingEnhanced = false;
+
+      switch (view) {
+        case "original":
+          contentToShow = storedContent.originalContent;
+          isShowingEnhanced = false;
+          break;
+        case "enhanced":
+          contentToShow =
+            storedContent.enhancedContent || storedContent.originalContent;
+          isShowingEnhanced = true;
+          break;
+        case "summary":
+          contentToShow = storedContent.summary || "Summary not available";
+          isShowingEnhanced = false; // Summary is considered a different view
+          break;
+        default:
+          return;
+      }
+
+      // Update the content element
+      if (contentElement) {
+        contentElement.innerHTML = contentToShow;
+      }
+
+      // Update toggle state in storage
+      await StorageManager.setToggleState(this.currentUrl, isShowingEnhanced);
+
+      // Dispatch custom event for other components to listen
+      window.dispatchEvent(
+        new CustomEvent("novelsynth:contentToggled", {
+          detail: { view, isShowingEnhanced },
+        })
+      );
+    } catch (error) {
+      console.error("Failed to toggle content:", error);
+      this.showErrorBanner(contentElement, "Failed to switch content view");
+    }
+  }
+
+  /**
+   * Update status display in banner
+   */
+  private updateStatusDisplay(
+    banner: HTMLElement,
+    view: string | undefined
+  ): void {
+    const statusValue = banner.querySelector(".status-value");
+    if (statusValue && view) {
+      const viewNames = {
+        original: "Original",
+        enhanced: "Enhanced",
+        summary: "Summary",
+      };
+      statusValue.textContent =
+        viewNames[view as keyof typeof viewNames] || "Unknown";
+    }
+  }
+
+  /**
+   * Check if content has been enhanced and update banner accordingly
+   */
+  async checkAndUpdateBanner(contentElement: Element): Promise<void> {
+    const storedContent = await StorageManager.getStoredContentForUrl(
+      this.currentUrl
+    );
+    const hasEnhancedContent = !!storedContent?.enhancedContent;
+    const hasSummary = !!storedContent?.summary;
+
+    if (hasEnhancedContent || hasSummary) {
+      await this.showToggleBanner(
+        contentElement,
+        hasEnhancedContent,
+        hasSummary
+      );
+    }
+  }
+
+  /**
    * Remove the current banner
    */
   removeBanner(): void {
@@ -277,6 +494,10 @@ export class ProcessingBanner {
 
         .novelsynth-processing-banner.error {
           background: linear-gradient(135deg, #ff6b6b 0%, #ffa8a8 100%);
+        }
+
+        .novelsynth-processing-banner.toggle-banner {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         @keyframes processingPulse {
@@ -386,6 +607,59 @@ export class ProcessingBanner {
           margin: 0;
           font-size: 14px;
           line-height: 1.4;
+        }
+
+        .novelsynth-banner-actions {
+          display: flex;
+          gap: 8px;
+        }
+
+        .novelsynth-toggle-btn {
+          background: rgba(255, 255, 255, 0.1);
+          color: white;
+          border: none;
+          padding: 8px 12px;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 13px;
+          font-weight: 500;
+          transition: background 0.2s, opacity 0.2s;
+        }
+
+        .novelsynth-toggle-btn.active {
+          background: rgba(255, 255, 255, 0.3);
+        }
+
+        .novelsynth-toggle-btn:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        .novelsynth-banner-status {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          margin-top: 12px;
+        }
+
+        .status-indicator {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background: rgba(255, 255, 255, 0.1);
+          padding: 8px 12px;
+          border-radius: 6px;
+        }
+
+        .status-label {
+          font-size: 13px;
+          opacity: 0.9;
+          font-weight: 500;
+        }
+
+        .status-value {
+          font-size: 13px;
+          font-weight: 600;
         }
 
         @media (max-width: 768px) {

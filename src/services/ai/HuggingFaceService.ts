@@ -1,5 +1,5 @@
 import { BaseAIService } from "./BaseAIService";
-import type { AIProvider, AIResponse } from "../../types";
+import type { AIProvider, AIResponse, EnhancementOptions } from "../../types";
 import { WordCounter } from "../../utils/WordCounter";
 
 export class HuggingFaceService extends BaseAIService {
@@ -100,15 +100,19 @@ export class HuggingFaceService extends BaseAIService {
       ],
     };
   }
-
   async enhance(
     content: string,
-    prompt: string,
-    options?: any
+    options: EnhancementOptions = {}
   ): Promise<AIResponse> {
     // HuggingFace free inference has limited enhancement capabilities
     // Return the original content with a simple enhancement note
     const startTime = Date.now();
+
+    const {
+      contentType = "generic",
+      enhancementType = "improve",
+      model = "basic-cleanup",
+    } = options;
 
     try {
       // Basic enhancement - just return cleaned content with minor improvements
@@ -123,14 +127,19 @@ export class HuggingFaceService extends BaseAIService {
 
       return {
         enhanced: enhancedContent,
+        originalLength: content.length,
+        enhancedLength: enhancedContent.length,
+        model: model,
+        timestamp: new Date().toISOString(),
         processingTime,
         stats,
       };
     } catch (error) {
       return {
-        error: `Failed to enhance content: ${
+        error: `Enhancement failed: ${
           error instanceof Error ? error.message : "Unknown error"
         }`,
+        originalContent: content,
       };
     }
   }

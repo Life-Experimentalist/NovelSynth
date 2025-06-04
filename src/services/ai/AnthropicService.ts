@@ -1,5 +1,5 @@
 import { BaseAIService } from "./BaseAIService";
-import type { AIProvider, AIResponse } from "../../types";
+import type { AIProvider, AIResponse, EnhancementOptions } from "../../types";
 import { WordCounter } from "../../utils/WordCounter";
 
 export class AnthropicService extends BaseAIService {
@@ -138,16 +138,19 @@ export class AnthropicService extends BaseAIService {
       };
     }
   }
-
   async enhance(
     content: string,
-    prompt: string,
-    options?: any
+    options?: EnhancementOptions
   ): Promise<AIResponse> {
     this.validateApiKey();
 
     const startTime = Date.now();
     const model = options?.model || "claude-3-sonnet-20240229";
+
+    // Build prompt from options
+    const prompt =
+      options?.customPrompt ||
+      `Enhance the following content by improving its readability, clarity, and overall quality while preserving the original meaning and style:\n\n${content}`;
 
     try {
       const response = await this.makeRequest(
@@ -161,7 +164,8 @@ export class AnthropicService extends BaseAIService {
           },
           body: JSON.stringify({
             model,
-            max_tokens: 4096,
+            max_tokens: options?.maxTokens || 4096,
+            temperature: options?.temperature || 0.7,
             messages: [
               {
                 role: "user",
@@ -180,12 +184,18 @@ export class AnthropicService extends BaseAIService {
         enhanced: enhancedContent,
         processingTime,
         stats,
+        originalLength: content.length,
+        enhancedLength: enhancedContent.length,
+        model: model,
+        timestamp: new Date().toISOString(),
+        originalContent: content,
       };
     } catch (error) {
       return {
         error: `Failed to enhance content: ${
           error instanceof Error ? error.message : "Unknown error"
         }`,
+        originalContent: content,
       };
     }
   }

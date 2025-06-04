@@ -4,28 +4,30 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Build outputs
-dist/
+# Build and Distribution Files
+scripts/dist/
 build/
-releases/
 *.tgz
 *.zip
+*.crx
+*.xpi
 
-# Environment variables
+# Runtime files
+*.log
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# IDE and editor files
+# IDE and Editor Files
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# OS generated files
+# OS Files
 .DS_Store
 .DS_Store?
 ._*
@@ -33,35 +35,39 @@ releases/
 .Trashes
 ehthumbs.db
 Thumbs.db
+desktop.ini
 
-# Logs
-logs
-*.log
+# Temporary Files
+tmp/
+temp/
+.tmp
+.temp
 
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
+# Cache Files
+.cache/
+.parcel-cache/
 
-# Coverage directory used by tools like istanbul
+# Chrome Extension Development
+chrome-extension-key.pem
+*.pem
+
+# Firefox Extension Development
+web-ext-artifacts/
+
+# Testing
 coverage/
-*.lcov
+.nyc_output/
 
-# Dependency directories
-jspm_packages/
+# Backup Files
+*.bak
+*.backup
+*.old
 
-# Optional npm cache directory
-.npm
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
+# Security
+config/keys.json
+config/secrets.json
+*.key
+*.secret
 
 # TypeScript cache
 *.tsbuildinfo
@@ -69,19 +75,9 @@ jspm_packages/
 # Webpack bundle analyzer
 bundle-analyzer-report.html
 
-# Extension specific
-*.crx
-*.xpi
-*.pem
-key.pem
-
 # API keys and secrets (if any test files contain them)
 **/test-keys.json
 **/secrets.json
-
-# Temporary files
-tmp/
-temp/
 
 # Lock files (choose one based on your package manager)
 # package-lock.json  # Uncomment if using yarn
@@ -90,9 +86,6 @@ temp/
 # MacOS
 .AppleDouble
 .LSOverride
-
-# Windows
-desktop.ini
 
 # Linux
 *~
@@ -133,8 +126,6 @@ manifest-firefox.json
 
 # Test outputs
 test-results/
-coverage/
-.nyc_output/
 
 # Documentation build
 docs/_build/

@@ -115,9 +115,9 @@ class BackgroundService {
         // Use the enhanced method with basic enhancement prompt
         response = await this.aiManager.enhance(
           content,
-          "Enhance this content to improve readability, flow, and overall quality while maintaining the original meaning and style.",
+          options,
+          // "Enhance this content to improve readability, flow, and overall quality while maintaining the original meaning and style.",
           "enhance",
-          options
         );
         break;
       case "summarize":

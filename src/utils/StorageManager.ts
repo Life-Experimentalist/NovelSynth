@@ -1,7 +1,15 @@
-import type { UserSettings, CustomPrompts } from "../types";
+import type {
+  UserSettings,
+  CustomPrompts,
+  ContentStorage,
+  ContentToggleState,
+  StorageStats,
+  ContentType,
+} from "../types";
 
 export class StorageManager {
   private static readonly STORAGE_KEY = "novelsynth_settings";
+  private static readonly CONTENT_STORAGE_KEY = "novelsynth_content";
   private static readonly DEFAULT_SETTINGS: UserSettings = {
     selectedProvider: "gemini",
     selectedModels: {
@@ -133,6 +141,7 @@ export class StorageManager {
       return false;
     }
   }
+
   static async setCustomPrompt(
     promptType: keyof CustomPrompts,
     promptKey: string,
@@ -271,5 +280,205 @@ export class StorageManager {
         }
       }
     });
+  }
+  /**
+   * Store enhanced content with original for toggle functionality
+   */
+  static async storeContent(
+    pageUrl: string,
+    originalContent: string,
+    enhancedContent: string,
+    metadata: {
+      timestamp: string;
+      provider: string;
+      model: string;
+      contentType: ContentType;
+      processingTime?: number;
+      websiteId: string;
+    }
+  ): Promise<boolean> {
+    try {
+      const contentStorage: ContentStorage = {
+        pageUrl,
+        originalContent,
+        enhancedContent,
+        timestamp: Date.now(),
+        contentHash: this.generateContentHash(originalContent),
+        contentType: metadata.contentType as ContentType,
+        websiteId: metadata.websiteId,
+      };
+
+      const existing = await this.getStoredContent();
+      existing[pageUrl] = contentStorage;
+
+      // Keep only the most recent 50 entries to manage storage
+      const entries = Object.entries(existing);
+      if (entries.length > 50) {
+        const sorted = entries.sort((a, b) => b[1].timestamp - a[1].timestamp);
+        const limited = Object.fromEntries(sorted.slice(0, 50));
+        await chrome.storage.local.set({ [this.CONTENT_STORAGE_KEY]: limited });
+      } else {
+        await chrome.storage.local.set({
+          [this.CONTENT_STORAGE_KEY]: existing,
+        });
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Failed to store content:", error);
+      return false;
+    }
+  }
+
+  /**
+   * Retrieve stored content for a URL
+   */
+  static async getStoredContentForUrl(
+    pageUrl: string
+  ): Promise<ContentStorage | null> {
+    try {
+      const stored = await this.getStoredContent();
+      return stored[pageUrl] || null;
+    } catch (error) {
+      console.error("Failed to retrieve content:", error);
+      return null;
+    }
+  }
+
+  /**
+   * Get all stored content
+   */
+  static async getStoredContent(): Promise<Record<string, ContentStorage>> {
+    try {
+      const result = await chrome.storage.local.get(this.CONTENT_STORAGE_KEY);
+      return result[this.CONTENT_STORAGE_KEY] || {};
+    } catch (error) {
+      console.error("Failed to get stored content:", error);
+      return {};
+    }
+  }
+
+  /**
+   * Clear stored content for a URL or all content
+   */
+  static async clearStoredContent(pageUrl?: string): Promise<boolean> {
+    try {
+      if (pageUrl) {
+        const stored = await this.getStoredContent();
+        delete stored[pageUrl];
+        await chrome.storage.local.set({ [this.CONTENT_STORAGE_KEY]: stored });
+      } else {
+        await chrome.storage.local.remove(this.CONTENT_STORAGE_KEY);
+      }
+      return true;
+    } catch (error) {
+      console.error("Failed to clear stored content:", error);
+      return false;
+    }
+  }
+
+  /**
+   * Get storage statistics
+   */
+  static async getStorageStats(): Promise<StorageStats> {
+    try {
+      const stored = await this.getStoredContent();
+      const entries = Object.values(stored);
+
+      const totalSize = JSON.stringify(stored).length;
+      const totalItems = entries.length;
+      const oldestItem = entries.reduce(
+        (oldest, current) =>
+          current.timestamp < oldest.timestamp ? current : oldest,
+        entries[0]
+      );
+      const newestItem = entries.reduce(
+        (newest, current) =>
+          current.timestamp > newest.timestamp ? current : newest,
+        entries[0]
+      );
+
+      return {
+        totalSize,
+        totalItems,
+        oldestItem: oldestItem?.timestamp || undefined,
+        newestItem: newestItem?.timestamp || undefined,
+      };
+    } catch (error) {
+      console.error("Failed to get storage stats:", error);
+      return {
+        totalSize: 0,
+        totalItems: 0,
+      };
+    }
+  }
+
+  /**
+   * Manage content toggle state for a specific URL
+   */
+  static async setToggleState(
+    pageUrl: string,
+    isShowingEnhanced: boolean
+  ): Promise<boolean> {
+    try {
+      const toggleStates = await this.getToggleStates();
+      const content = await this.getStoredContentForUrl(pageUrl);
+
+      toggleStates[pageUrl] = {
+        isShowingEnhanced,
+        hasEnhancedContent: !!content?.enhancedContent,
+        hasSummary: !!content?.summary,
+        isProcessing: false,
+      };
+
+      await chrome.storage.local.set({
+        novelsynth_toggle_states: toggleStates,
+      });
+      return true;
+    } catch (error) {
+      console.error("Failed to set toggle state:", error);
+      return false;
+    }
+  }
+
+  /**
+   * Get toggle state for a URL
+   */
+  static async getToggleState(
+    pageUrl: string
+  ): Promise<ContentToggleState | null> {
+    try {
+      const toggleStates = await this.getToggleStates();
+      return toggleStates[pageUrl] || null;
+    } catch (error) {
+      console.error("Failed to get toggle state:", error);
+      return null;
+    }
+  }
+
+  /**
+   * Get all toggle states
+   */
+  static async getToggleStates(): Promise<Record<string, ContentToggleState>> {
+    try {
+      const result = await chrome.storage.local.get("novelsynth_toggle_states");
+      return result["novelsynth_toggle_states"] || {};
+    } catch (error) {
+      console.error("Failed to get toggle states:", error);
+      return {};
+    }
+  }
+
+  /**
+   * Generate a simple hash for content to detect changes
+   */
+  private static generateContentHash(content: string): string {
+    let hash = 0;
+    for (let i = 0; i < content.length; i++) {
+      const char = content.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
+      hash = hash & hash; // Convert to 32-bit integer
+    }
+    return Math.abs(hash).toString(16);
   }
 }

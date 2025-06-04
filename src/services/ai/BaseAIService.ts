@@ -1,4 +1,4 @@
-import type { AIProvider, AIResponse } from "../../types";
+import type { AIProvider, AIResponse, EnhancementOptions } from "../../types";
 
 export abstract class BaseAIService {
   abstract provider: AIProvider;
@@ -13,15 +13,16 @@ export abstract class BaseAIService {
   setApiKey(apiKey: string): void {
     this.apiKey = apiKey;
   }
+
+  // Updated method signatures to support enhanced functionality
+  abstract enhance(
+    content: string,
+    options?: EnhancementOptions
+  ): Promise<AIResponse>;
   abstract summarize(content: string, options?: any): Promise<AIResponse>;
   abstract analyze(content: string, options?: any): Promise<AIResponse>;
   abstract generateSuggestions(
     content: string,
-    options?: any
-  ): Promise<AIResponse>;
-  abstract enhance(
-    content: string,
-    prompt: string,
     options?: any
   ): Promise<AIResponse>;
 
@@ -44,5 +45,26 @@ export abstract class BaseAIService {
       console.error(`API request failed for ${this.provider.name}:`, error);
       throw error;
     }
+  }
+
+  /**
+   * Get available models for this provider
+   */
+  getAvailableModels(): string[] {
+    return this.provider.models || [];
+  }
+
+  /**
+   * Check if a specific feature is supported
+   */
+  supportsFeature(feature: string): boolean {
+    return this.provider.features.includes(feature);
+  }
+
+  /**
+   * Get provider information
+   */
+  getProviderInfo(): AIProvider {
+    return this.provider;
   }
 }

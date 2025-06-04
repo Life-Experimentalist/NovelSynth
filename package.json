@@ -2,115 +2,88 @@
   "name": "novelsynth",
   "version": "1.0.0",
   "description": "AI-powered content enhancement for web novels, articles, and long-form content",
-  "main": "dist/background.js",
-  "scripts": {
-    "build": "webpack --mode=production",
-    "build:dev": "webpack --mode=development",
-    "watch": "webpack --mode=development --watch",
-    "clean": "rimraf dist",
-    "test": "node test-extension.js",
-    "test:types": "npx tsc --noEmit",
-    "sync:metadata": "node build/sync-metadata.js",
-    "sync:check": "node build/sync-metadata.js --check",
-    "build:extension": "node build/build.js",
-    "build:full": "npm run sync:metadata && npm run build:extension",
-    "package:chrome": "npm run build && cd dist && zip -r ../novelsynth-chrome.zip .",
-    "package:firefox": "npm run build && cd dist && zip -r ../novelsynth-firefox.zip ."
+  "author": "VKrishna04",
+  "license": "Apache-2.0",
+  "homepage": "https://life-experimentalist.github.io/novelsynth",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LifeExperimentalist/novelsynth.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LifeExperimentalist/novelsynth/issues"
   },
   "keywords": [
     "browser-extension",
     "ai",
     "content-enhancement",
-    "web-novels",
-    "reading"
+    "reading",
+    "novels",
+    "chrome-extension",
+    "firefox-addon"
   ],
-  "author": "NovelSynth Team",
-  "license": "MIT",
-  "homepage": "",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/yourusername/novelsynth.git"
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.2.0"
   },
-  "browser_action": {
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icons/icon16.png",
-      "32": "icons/icon32.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
-    }
+  "scripts": {
+    "update-footer": "node scripts/update-footer.js",
+    "update-footer-force": "node scripts/update-footer.js --force",
+    "check-footer": "node scripts/update-footer.js --check",
+    "build": "npm run update-footer && webpack --mode=production",
+    "build:dev": "webpack --mode=development",
+    "build:extension": "node scripts/build-extension.js",
+    "package": "npm run build && node scripts/create-packages.js",
+    "package:chrome": "mkdir -p releases && cd dist && zip -r ../releases/novelsynth-chrome-v$npm_package_version.zip . && cd ..",
+    "package:firefox": "mkdir -p releases && cd dist && zip -r ../releases/novelsynth-firefox-v$npm_package_version.zip . && cd ..",
+    "package:only": "node scripts/create-packages.js",
+    "test": "npm run test:types && npm run test:extension",
+    "test:types": "npx tsc --noEmit",
+    "test:extension": "node scripts/test-extension.js",
+    "dev": "npm run update-footer && npm run watch",
+    "watch": "webpack --mode=development --watch",
+    "release": "npm run test && npm run package",
+    "setup": "node scripts/setup-cross-platform.js",
+    "setup:auto": "node scripts/setup-cross-platform.js",
+    "setup:ps": "powershell -ExecutionPolicy Bypass -File scripts/setup-dev.ps1",
+    "setup:bat": "scripts\\setup-dev.bat",
+    "setup:sh": "bash scripts/setup-dev.sh",
+    "pre-commit": "npm run update-footer && git add wiki/_Footer.md",
+    "clean": "rimraf dist scripts/dist scripts/packages",
+    "clean-build": "npm run clean && npm run build",
+    "clean-package": "npm run clean && npm run package",
+    "postinstall": "node -e \"console.log('\\n🚀 Run \\033[1mnpm run setup\\033[0m to complete the development environment setup!\\n')\""
   },
-  "permissions": [
-    "activeTab",
-    "storage",
-    "scripting"
-  ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
-  "background": {
-    "service_worker": "background.js"
-  },
-  "content_scripts": [
-    {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "content.js"
-      ],
-      "css": [
-        "content.css"
-      ]
-    }
-  ],
-  "web_accessible_resources": [
-    {
-      "resources": [
-        "*.css",
-        "*.js",
-        "*.png",
-        "*.svg"
-      ],
-      "matches": [
-        "<all_urls>"
-      ]
-    }
-  ],
-  "icons": {
-    "16": "icons/icon16.png",
-    "32": "icons/icon32.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
-  },
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "novel-synth@VKrishna04.com"
-    }
-  },
-  "licenses": [
-    {
-      "type": "Apache-2.0",
-      "url": "https://www.apache.org/licenses/LICENSE-2.0"
-    }
-  ],
   "devDependencies": {
-    "@babel/core": "^7.27.4",
-    "@babel/preset-react": "^7.27.1",
-    "@babel/preset-typescript": "^7.27.1",
-    "@types/chrome": "^0.0.277",
-    "@types/react": "^19.1.6",
-    "@types/react-dom": "^19.1.5",
-    "babel-loader": "^10.0.0",
-    "copy-webpack-plugin": "^13.0.0",
-    "css-loader": "^7.1.2",
-    "html-webpack-plugin": "^5.6.3",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "rimraf": "^6.0.1",
-    "style-loader": "^4.0.0",
-    "typescript": "^5.8.3",
-    "webpack": "^5.99.9",
-    "webpack-cli": "^6.0.1"
+    "@babel/core": "^7.22.0",
+    "@babel/preset-react": "^7.22.0",
+    "@babel/preset-typescript": "^7.22.0",
+    "@types/chrome": "^0.0.246",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.3.7",
+    "babel-loader": "^9.1.0",
+    "copy-webpack-plugin": "^12.0.0",
+    "css-loader": "^6.8.0",
+    "eslint": "^8.0.0",
+    "html-webpack-plugin": "^5.5.0",
+    "rimraf": "^5.0.0",
+    "style-loader": "^3.3.0",
+    "typescript": "^5.0.0",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "extensionInfo": {
+    "supportedBrowsers": [
+      "chrome",
+      "firefox",
+      "edge"
+    ],
+    "manifestVersion": 3,
+    "defaultProviders": 5,
+    "defaultHandlers": 10
   }
 }

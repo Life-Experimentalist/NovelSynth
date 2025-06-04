@@ -1,54 +1,169 @@
-# NovelSynth Testing Checklist
+# NovelSynth Testing Guide
 
-## 🔧 Pre-Testing Setup
+## 🔧 **Quick Start Testing**
 
-### ✅ Build and Validation
-- [ ] Run `npm install` to install dependencies
-- [ ] Run `npm run test:types` to check TypeScript compilation
-- [ ] Run `npm run build` to create production build
-- [ ] Run `npm test` to validate extension structure
+### Install Dependencies
+```bash
+npm install
+```
 
-### ✅ File Structure Check
-- [ ] Verify `dist/` folder contains all required files:
-  - [ ] `background.js` - Service worker
-  - [ ] `content.js` - Content script
-  - [ ] `popup.js` - Popup interface
-  - [ ] `popup.html` - Popup HTML
-  - [ ] `manifest.json` - Extension manifest
-  - [ ] `content.css` - Content styles
-  - [ ] `icons/` folder with all icon sizes
+### Build Extension (Unified for All Browsers)
+```bash
+# Single build works for Chrome, Firefox, and Edge
+npm run build
 
-## 🌐 Browser Testing
+# Development build with source maps
+npm run build:dev
+```
 
-### Chrome Testing
-1. **Load Extension**
-   - [ ] Open Chrome
-   - [ ] Go to `chrome://extensions/`
-   - [ ] Enable "Developer mode"
-   - [ ] Click "Load unpacked"
-   - [ ] Select the `dist/` folder
-   - [ ] Verify extension loads without errors
+### Load in Chrome/Edge
+```bash
+# After building:
+# 1. Go to chrome://extensions/ (Chrome) or edge://extensions/ (Edge)
+# 2. Enable "Developer mode"
+# 3. Click "Load unpacked"
+# 4. Select the 'dist' folder
+```
 
-2. **Initial Setup**
-   - [ ] Click NovelSynth icon in toolbar
-   - [ ] Popup opens successfully
-   - [ ] Navigate to Settings tab
-   - [ ] Add API key for at least one provider (Gemini recommended)
-   - [ ] Select models for each feature type
-   - [ ] Save settings
+### Load in Firefox
+```bash
+# After building:
+# 1. Go to about:debugging
+# 2. Click "This Firefox"
+# 3. Click "Load Temporary Add-on"
+# 4. Select manifest.json from 'dist' folder
 
-### Firefox Testing
-1. **Load Extension**
-   - [ ] Open Firefox
-   - [ ] Go to `about:debugging`
-   - [ ] Click "This Firefox"
-   - [ ] Click "Load Temporary Add-on"
-   - [ ] Select `dist/manifest.json`
-   - [ ] Verify extension loads without errors
+# Or use web-ext for development:
+cd dist && npx web-ext run
+```
 
-2. **Initial Setup**
-   - [ ] Click NovelSynth icon in toolbar
-   - [ ] Complete same setup as Chrome testing
+## 🚀 **Cross-Browser Compatibility**
+
+### Manifest V3 Unified Support
+- ✅ **Chrome 88+**: Full Manifest V3 support
+- ✅ **Firefox 109+**: Full Manifest V3 support
+- ✅ **Edge 88+**: Full Manifest V3 support
+
+### Single Build Process
+- One `manifest.json` works across all browsers
+- Unified extension API with cross-browser compatibility layer
+- Same `dist/` folder can be loaded in any supported browser
+
+## 📦 **Release Packaging**
+
+### Create Release Packages
+```bash
+# Build and create versioned packages
+npm run prepare-release
+
+# This creates in releases/ folder:
+# - novelsynth-chrome-v1.0.0.zip
+# - novelsynth-firefox-v1.0.0.zip
+```
+
+### Package Structure
+Both packages contain identical files from `dist/`:
+```
+dist/
+├── manifest.json         # Unified manifest for all browsers
+├── background.js         # Service worker
+├── content.js           # Content script
+├── popup.js             # Popup interface
+├── popup.html           # Popup HTML
+├── content.css          # Content styles
+└── icons/               # Extension icons
+```
+
+## 🧪 **How to Test the Extension**
+
+### Step 1: Build the Extension
+```bash
+# Install dependencies (first time only)
+npm install
+
+# Build extension for all browsers
+npm run build
+```
+
+### Step 2: Load in Chrome
+1. Open Chrome browser
+2. Go to `chrome://extensions/`
+3. Enable "Developer mode" (toggle in top right)
+4. Click "Load unpacked"
+5. Select the `dist/` folder
+6. Extension should appear in toolbar with NovelSynth icon
+
+### Step 3: Load in Firefox
+1. Open Firefox browser
+2. Go to `about:debugging`
+3. Click "This Firefox" in left sidebar
+4. Click "Load Temporary Add-on..."
+5. Navigate to `dist/` folder and select `manifest.json`
+6. Extension should appear in toolbar
+
+### Step 4: Load in Edge
+1. Open Microsoft Edge browser
+2. Go to `edge://extensions/`
+3. Enable "Developer mode" (toggle in left sidebar)
+4. Click "Load unpacked"
+5. Select the `dist/` folder
+6. Extension should appear in toolbar
+
+### Step 5: Test Functionality
+1. Navigate to a supported website (e.g., fanfiction.net story)
+2. Click the NovelSynth extension icon
+3. Configure your AI provider (Google Gemini recommended)
+4. Try enhancing content on the page
+5. Verify toggle between original/enhanced content works
+
+## 🎯 **Cross-Browser Testing Checklist**
+
+### ✅ Chrome Testing
+- [ ] Extension loads without errors
+- [ ] Icon appears in toolbar
+- [ ] Popup opens correctly
+- [ ] Content detection works
+- [ ] AI enhancement functions
+- [ ] Settings persist across sessions
+
+### ✅ Firefox Testing
+- [ ] Extension loads without errors
+- [ ] Icon appears in toolbar
+- [ ] Popup opens correctly
+- [ ] Content detection works
+- [ ] AI enhancement functions
+- [ ] Settings persist across sessions
+
+### ✅ Edge Testing
+- [ ] Extension loads without errors
+- [ ] Icon appears in toolbar
+- [ ] Popup opens correctly
+- [ ] Content detection works
+- [ ] AI enhancement functions
+- [ ] Settings persist across sessions
+
+## 📦 **Creating Release Packages**
+
+### Build and Package for Distribution
+```bash
+# Create versioned packages for both browsers
+npm run package
+
+# This creates in releases/ folder:
+# - novelsynth-chrome-v1.0.0.zip
+# - novelsynth-firefox-v1.0.0.zip
+```
+
+### Manual Package Creation
+```bash
+# Build first
+npm run build
+
+# Create packages manually
+npm run package:only
+```
+
+Both packages contain identical files and work on their respective platforms.
 
 ## 📝 Content Detection Testing
 

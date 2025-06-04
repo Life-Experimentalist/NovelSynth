@@ -9,6 +9,7 @@ import type {
   UserSettings,
   AIModel,
   ContentSegment,
+  EnhancementOptions,
 } from "../../types";
 import { BaseAIService } from "./BaseAIService";
 import { RateLimiter } from "../../utils/RateLimiter";
@@ -83,19 +84,13 @@ export class AIServiceManager {
   getCurrentProvider(): AIProvider | null {
     return this.currentService?.provider || null;
   }
-
   /**
    * Enhanced method with rate limiting and segmentation support
    */
   async enhance(
     content: string,
-    prompt: string,
-    featureType:
-      | "enhance"
-      | "summarize"
-      | "analyze"
-      | "suggestions" = "enhance",
-    options?: any
+    options: EnhancementOptions = {},
+    featureType: "enhance" | "summarize" | "analyze" | "suggestions" = "enhance"
   ): Promise<AIResponse> {
     if (!this.currentService || !this.currentSettings) {
       return { error: "No AI provider selected or settings not loaded" };
@@ -111,18 +106,20 @@ export class AIServiceManager {
         };
       }
 
+      // Merge model into options
+      const enhancedOptions = { ...options, model: model.id };
+
       // Check if content needs segmentation
       const shouldSegment = content.length > model.maxTokens * 3; // Rough token estimation
 
       if (shouldSegment) {
         return await this.enhanceWithSegmentation(
           content,
-          prompt,
-          model,
-          options
+          enhancedOptions,
+          model
         );
       } else {
-        return await this.enhanceSingleContent(content, prompt, model, options);
+        return await this.enhanceSingleContent(content, enhancedOptions, model);
       }
     } catch (error) {
       return {
@@ -135,12 +132,10 @@ export class AIServiceManager {
 
   /**
    * Handle large content with segmentation
-   */
-  private async enhanceWithSegmentation(
+   */ private async enhanceWithSegmentation(
     content: string,
-    prompt: string,
-    model: AIModel,
-    options?: any
+    options: EnhancementOptions,
+    model: AIModel
   ): Promise<AIResponse> {
     const segments = ContentSegmenter.segmentContent(content, {
       maxChunkSize: Math.floor(model.maxTokens * 2.5), // Conservative token estimation
@@ -161,18 +156,23 @@ export class AIServiceManager {
           model
         );
       }
-
-      const segmentPrompt = `${prompt}\n\n**Important:** This is part ${
-        segments.indexOf(segment) + 1
-      } of ${
-        segments.length
-      } segments. Maintain consistency with the overall content style and formatting.`;
+      const segmentOptions = {
+        ...options,
+        customPrompt: options.customPrompt
+          ? `${options.customPrompt}\n\n**Important:** This is part ${
+              segments.indexOf(segment) + 1
+            } of ${
+              segments.length
+            } segments. Maintain consistency with the overall content style and formatting.`
+          : `**Important:** This is part ${segments.indexOf(segment) + 1} of ${
+              segments.length
+            } segments. Maintain consistency with the overall content style and formatting.`,
+      };
 
       try {
         const response = await this.currentService!.enhance(
           segment.content,
-          segmentPrompt,
-          { ...options, model: model.id }
+          segmentOptions
         );
 
         if (response.error) {
@@ -214,12 +214,10 @@ export class AIServiceManager {
 
   /**
    * Handle single content enhancement with rate limiting
-   */
-  private async enhanceSingleContent(
+   */ private async enhanceSingleContent(
     content: string,
-    prompt: string,
-    model: AIModel,
-    options?: any
+    options: EnhancementOptions,
+    model: AIModel
   ): Promise<AIResponse> {
     // Apply rate limiting
     if (this.currentSettings?.rateLimiting.enabled) {
@@ -230,10 +228,7 @@ export class AIServiceManager {
     }
 
     try {
-      const response = await this.currentService!.enhance(content, prompt, {
-        ...options,
-        model: model.id,
-      });
+      const response = await this.currentService!.enhance(content, options);
 
       // Record rate limit usage
       RateLimiter.recordRequest(this.currentService!.provider.id, model);
