@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://github.com/LifeExperimentalist/novelsynth"
   },
-  "license": "Apache-2.0-License",
+  "license": "Apache-2.0",
   "short_name": "NovelSynth",
   "description": "AI-powered content enhancement for web novels, articles, and long-form content",
   "permissions": [
@@ -17,10 +17,24 @@
     "scripting"
   ],
   "host_permissions": [
-    "<all_urls>"
+    "https://*/*",
+    "http://*/*"
   ],
-  "background": {
-    "service_worker": "background.js"
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "NovelSynth",
+    "default_icon": {
+      "16": "src/icons/icon16.png",
+      "32": "src/icons/icon32.png",
+      "48": "src/icons/icon48.png",
+      "128": "src/icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "src/icons/icon16.png",
+    "32": "src/icons/icon32.png",
+    "48": "src/icons/icon48.png",
+    "128": "src/icons/icon128.png"
   },
   "content_scripts": [
     {
@@ -30,34 +44,16 @@
       "js": [
         "content.js"
       ],
-      "css": [
-        "content.css"
-      ]
+      "run_at": "document_end"
     }
   ],
-  "action": {
-    "default_popup": "popup.html",
-    "default_title": "NovelSynth",
-    "default_icon": {
-      "16": "icons/icon16.png",
-      "32": "icons/icon32.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
-    }
-  },
-  "icons": {
-    "16": "icons/icon16.png",
-    "32": "icons/icon32.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+  "background": {
+    "service_worker": "background.js"
   },
   "web_accessible_resources": [
     {
       "resources": [
-        "*.css",
-        "*.js",
-        "*.png",
-        "*.svg"
+        "src/icons/*"
       ],
       "matches": [
         "<all_urls>"

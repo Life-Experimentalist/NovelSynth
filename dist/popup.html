@@ -1,8 +1,113 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>NovelSynth</title><style>body {
-        width: 400px;
-        min-height: 500px;
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NovelSynth</title>
+    <style>
+      body {
+        width: 350px;
+        height: 450px;
         margin: 0;
-        padding: 0;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          sans-serif;
-      }</style><script defer="defer" src="popup.js"></script></head><body><div id="root"></div></body></html>
+        padding: 16px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .header p {
+        margin: 4px 0 0 0;
+        opacity: 0.9;
+        font-size: 12px;
+      }
+      .status {
+        padding: 8px 12px;
+        border-radius: 6px;
+        margin-bottom: 16px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .status.ready {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      .status.processing {
+        background: rgba(255, 193, 7, 0.3);
+      }
+      .status.success {
+        background: rgba(40, 167, 69, 0.3);
+      }
+      .status.error {
+        background: rgba(220, 53, 69, 0.3);
+      }
+      .btn {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 8px;
+        border: none;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.9);
+        color: #333;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn:hover:not(:disabled) {
+        background: white;
+        transform: translateY(-1px);
+      }
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .btn.secondary {
+        background: rgba(255, 255, 255, 0.3);
+        color: white;
+      }
+      .btn.secondary:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.4);
+      }
+      #toggle-btn {
+        display: none;
+      }
+      .footer {
+        margin-top: 20px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        font-size: 12px;
+        opacity: 0.8;
+      }
+      #storage-info {
+        margin-bottom: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>✨ NovelSynth</h1>
+      <p>AI-powered content enhancement</p>
+    </div>
+
+    <div id="status" class="status ready">Ready to enhance</div>
+
+    <button id="enhance-btn" class="btn">🚀 Enhance Content</button>
+    <button id="summarize-btn" class="btn">📝 Summarize</button>
+    <button id="toggle-btn" class="btn secondary">🔄 Toggle View</button>
+
+    <div class="footer">
+      <div id="storage-info">Storage: Loading...</div>
+      <button id="settings-btn" class="btn secondary">⚙️ Settings</button>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

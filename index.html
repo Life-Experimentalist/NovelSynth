@@ -3,309 +3,39 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NovelSynth - AI-Powered Content Enhancement Extension</title>
+    <base href="./">
+    <title>NovelSynth - Transform Your Reading Journey with AI</title>
     <meta
       name="description"
-      content="Cross-browser extension that detects long-form content and provides AI-powered enhancement, summarization, and analysis. Supports multiple AI providers with rate limiting and content segmentation."
+      content="Discover the future of reading with NovelSynth. AI-powered summaries, analysis, and insights for web novels, fanfiction, and long-form content. Turn any website into your personal reading companion."
     />
-    <link rel="stylesheet" href="styles.css" />
 
-    <!-- Favicon -->
+    <!-- SEO Meta Tags -->
+    <meta property="og:title" content="NovelSynth - AI Reading Companion" />
+    <meta property="og:description" content="Transform your reading experience with AI-powered summaries, character analysis, and smart insights for novels and stories." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://novelsynth.github.io/" />    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="src/icons/icon32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="src/icons/icon16.png">
-  </head>
-  <body>
-    <header class="header">
-      <div class="container">
-        <div class="header-content">
-          <img src="src/icons/icon48.png" alt="NovelSynth Logo" class="logo">
-          <h1>NovelSynth</h1>
-          <p class="tagline">AI-Powered Content Enhancement Extension</p>
-        </div>
-      </div>
-    </header>
 
-    <main class="main">
-      <section class="hero">
-        <div class="container">
-          <h2>Transform Your Reading Experience</h2>
-          <p class="hero-description">
-            NovelSynth is a powerful cross-browser extension that automatically detects long-form content
-            and provides AI-powered enhancement, summarization, and analysis. Perfect for web novels,
-            articles, documentation, and any lengthy text content.
-          </p>
-          <div class="download-buttons">
-            <a href="#installation" class="btn btn-primary">Install Extension</a>
-            <a href="#demo" class="btn btn-secondary">View Demo</a>
-          </div>
-        </div>
-      </section>
-
-      <section id="features" class="features">
-        <div class="container">
-          <h2>Key Features</h2>
-          <div class="features-grid">
-            <div class="feature-card">
-              <div class="feature-icon">✨</div>
-              <h3>Content Enhancement</h3>
-              <p>Improve readability, flow, and overall quality while maintaining original meaning and style.</p>
-            </div>
-            <div class="feature-card">
-              <div class="feature-icon">📄</div>
-              <h3>Smart Summarization</h3>
-              <p>Generate concise summaries of long articles, chapters, and documents.</p>
-            </div>
-            <div class="feature-card">
-              <div class="feature-icon">🔍</div>
-              <h3>Content Analysis</h3>
-              <p>Deep analysis of writing style, themes, and content structure.</p>
-            </div>
-            <div class="feature-card">
-              <div class="feature-icon">💡</div>
-              <h3>AI Suggestions</h3>
-              <p>Get intelligent suggestions for improvement and next steps.</p>
-            </div>
-            <div class="feature-card">
-              <div class="feature-icon">🤖</div>
-              <h3>Multiple AI Providers</h3>
-              <p>Support for Gemini, OpenAI, Anthropic, HuggingFace, and OpenRouter.</p>
-            </div>
-            <div class="feature-card">
-              <div class="feature-icon">⚡</div>
-              <h3>Rate Limiting & Segmentation</h3>
-              <p>Intelligent handling of large content with automatic rate limiting.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="supported-sites" class="supported-sites">
-        <div class="container">
-          <h2>Supported Websites</h2>
-          <div class="sites-grid">
-            <div class="site-card">
-              <h4>Fiction Platforms</h4>
-              <ul>
-                <li>FanFiction.Net</li>
-                <li>Archive of Our Own</li>
-                <li>Royal Road</li>
-                <li>WebNovel.com</li>
-              </ul>
-            </div>
-            <div class="site-card">
-              <h4>Technical Content</h4>
-              <ul>
-                <li>GeeksforGeeks</li>
-                <li>Medium</li>
-                <li>Documentation sites</li>
-                <li>Technical blogs</li>
-              </ul>
-            </div>
-            <div class="site-card">
-              <h4>News & Articles</h4>
-              <ul>
-                <li>News websites</li>
-                <li>Blog posts</li>
-                <li>Long-form articles</li>
-                <li>Generic content</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="installation" class="installation">
-        <div class="container">
-          <h2>Installation</h2>
-          <div class="install-steps">
-            <div class="step">
-              <div class="step-number">1</div>
-              <div class="step-content">
-                <h3>Download the Extension</h3>
-                <p>Download the latest release from the releases page or build from source.</p>
-                <div class="download-links">
-                  <a href="releases/" class="btn btn-outline">Download Release</a>
-                  <a href="#build" class="btn btn-outline">Build from Source</a>
-                </div>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-number">2</div>
-              <div class="step-content">
-                <h3>Install in Browser</h3>
-                <div class="browser-instructions">
-                  <div class="browser-tab active" data-browser="chrome">
-                    <h4>Chrome/Edge</h4>
-                    <ol>
-                      <li>Open Chrome Extensions (chrome://extensions/)</li>
-                      <li>Enable "Developer mode"</li>
-                      <li>Click "Load unpacked" and select the extension folder</li>
-                    </ol>
-                  </div>
-                  <div class="browser-tab" data-browser="firefox">
-                    <h4>Firefox</h4>
-                    <ol>
-                      <li>Open Firefox Add-ons (about:addons)</li>
-                      <li>Click the gear icon and select "Debug Add-ons"</li>
-                      <li>Click "Load Temporary Add-on" and select manifest.json</li>
-                    </ol>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-number">3</div>
-              <div class="step-content">
-                <h3>Configure AI Providers</h3>
-                <p>Add your API keys for supported AI providers in the extension popup.</p>
-                <div class="provider-links">
-                  <a href="https://makersuite.google.com/app/apikey" target="_blank">Get Gemini API Key</a>
-                  <a href="https://platform.openai.com/api-keys" target="_blank">Get OpenAI API Key</a>
-                  <a href="https://console.anthropic.com/" target="_blank">Get Anthropic API Key</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="build" class="build-section">
-        <div class="container">
-          <h2>Build from Source</h2>
-          <div class="build-instructions">
-            <div class="code-block">
-              <h3>Prerequisites</h3>
-              <pre><code>Node.js 18+ and npm</code></pre>
-            </div>
-            <div class="code-block">
-              <h3>Clone and Install</h3>
-              <pre><code>git clone https://github.com/yourusername/NovelSynth.git
-cd NovelSynth
-npm install</code></pre>
-            </div>
-            <div class="code-block">
-              <h3>Development Build</h3>
-              <pre><code>npm run dev</code></pre>
-            </div>
-            <div class="code-block">
-              <h3>Production Build</h3>
-              <pre><code>npm run build</code></pre>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="demo" class="demo">
-        <div class="container">
-          <h2>How It Works</h2>
-          <div class="demo-steps">
-            <div class="demo-step">
-              <img src="src/icons/icon48.png" alt="Detection" class="demo-icon">
-              <h3>1. Automatic Detection</h3>
-              <p>NovelSynth automatically detects long-form content on supported websites.</p>
-            </div>
-            <div class="demo-step">
-              <img src="src/icons/icon48.png" alt="Enhancement" class="demo-icon">
-              <h3>2. AI Processing</h3>
-              <p>Choose from enhancement, summarization, analysis, or suggestions.</p>
-            </div>
-            <div class="demo-step">
-              <img src="src/icons/icon48.png" alt="Results" class="demo-icon">
-              <h3>3. Enhanced Content</h3>
-              <p>Get improved content with word count statistics and processing details.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="technical" class="technical">
-        <div class="container">
-          <h2>Technical Features</h2>
-          <div class="tech-features">
-            <div class="tech-feature">
-              <h3>🔧 Modular Architecture</h3>
-              <p>Clean separation of AI services, content handlers, and utilities.</p>
-            </div>
-            <div class="tech-feature">
-              <h3>⚡ Rate Limiting</h3>
-              <p>Intelligent rate limiting with automatic retry logic and wait times.</p>
-            </div>
-            <div class="tech-feature">
-              <h3>📊 Content Segmentation</h3>
-              <p>Handles large content by segmenting while preserving images and formatting.</p>
-            </div>
-            <div class="tech-feature">
-              <h3>🎯 Dynamic Model Selection</h3>
-              <p>Separate model selection for each feature type (enhance, summarize, analyze, suggestions).</p>
-            </div>
-            <div class="tech-feature">
-              <h3>🔒 Secure Storage</h3>
-              <p>API keys stored securely in browser storage with OAuth support.</p>
-            </div>
-            <div class="tech-feature">
-              <h3>📝 Custom Prompts</h3>
-              <p>Modularized prompt system with enhancement, summary, and website-specific prompts.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <div class="container">
-        <p>&copy; 2025 NovelSynth. Open source project.</p>
-        <div class="footer-links">
-          <a href="https://github.com/yourusername/NovelSynth">GitHub</a>
-          <a href="#installation">Install</a>
-          <a href="#build">Build</a>
-        </div>
-      </div>
-    </footer>
-
-    <script src="script.js"></script>
-  </body>
-</html>
-      content="https://novelsynth.github.io/NovelSynth/"
-    />
-    <meta
-      property="twitter:title"
-      content="NovelSynth - AI-Powered Content Enhancement"
-    />
-    <meta
-      property="twitter:description"
-      content="Enhance your reading experience with AI-powered summaries, analysis, and insights for web novels, articles, and long-form content."
-    />
-    <meta property="twitter:image" content="src/icons/icon-light.png" />
-
-    <link rel="icon" type="image/png" href="src/icons/icon-light.png" />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/css/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">    <!-- External Styles -->
     <link rel="stylesheet" href="styles.css" />
   </head>
-
   <body>
+    <!-- Navigation -->
     <nav class="navbar">
       <div class="nav-container">
         <div class="nav-logo">
-          <img
-            src="src/icons/icon-light.png"
-            alt="NovelSynth Logo"
-            class="logo-img"
-            style="width: 50px; height: 50px"
-          />
-          <span class="logo-text">NovelSynth</span>
+          <img src="src/icons/icon48.png" alt="NovelSynth Logo" class="logo-img" />
+          <span>NovelSynth</span>
         </div>
         <ul class="nav-menu">
           <li><a href="#features">Features</a></li>
-          <li><a href="#providers">AI Providers</a></li>
-          <li><a href="#handlers">Supported Sites</a></li>
-          <li><a href="#install">Install</a></li>
+          <li><a href="#supported-sites">Supported Sites</a></li>
+          <li><a href="#installation">Install</a></li>
           <li>
             <label class="theme-switch">
               <input
@@ -316,17 +46,8 @@ npm install</code></pre>
               <div class="theme-switch__container">
                 <div class="theme-switch__clouds"></div>
                 <div class="theme-switch__stars-container">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 144 55"
-                    fill="none"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M135.831 3.00688C135.055 3.85027 134.111 4.29946 133 4.35447C134.111 4.40947 135.055 4.85867 135.831 5.71123C136.607 6.55462 136.996 7.56303 136.996 8.72727C136.996 7.95722 137.172 7.25134 137.525 6.59129C137.886 5.93124 138.372 5.39954 138.98 5.00535C139.598 4.60199 140.268 4.39114 141 4.35447C139.88 4.2903 138.936 3.85027 138.16 3.00688C137.384 2.16348 136.996 1.16425 136.996 0C136.996 1.16425 136.607 2.16348 135.831 3.00688ZM31 23.3545C32.1114 23.2995 33.0551 22.8503 33.8313 22.0069C34.6075 21.1635 34.9956 20.1642 34.9956 19C34.9956 20.1642 35.3837 21.1635 36.1599 22.0069C36.9361 22.8503 37.8798 23.2903 39 23.3545C38.2679 23.3911 37.5976 23.602 36.9802 24.0053C36.3716 24.3995 35.8864 24.9312 35.5248 25.5913C35.172 26.2513 34.9956 26.9572 34.9956 27.7273C34.9956 26.563 34.6075 25.5546 33.8313 24.7112C33.0551 23.8587 32.1114 23.4095 31 23.3545ZM0 36.3545C1.11136 36.2995 2.05513 35.8503 2.83131 35.0069C3.6075 34.1635 3.99559 33.1642 3.99559 32C3.99559 33.1642 4.38368 34.1635 5.15987 35.0069C5.93605 35.8503 6.87982 36.2903 8 36.3545C7.26792 36.3911 6.59757 36.602 5.98015 37.0053C5.37155 37.3995 4.88644 37.9312 4.52481 38.5913C4.172 39.2513 3.99559 39.9572 3.99559 40.7273C3.99559 39.563 3.6075 38.5546 2.83131 37.7112C2.05513 36.8587 1.11136 36.4095 0 36.3545ZM56.8313 24.0069C56.0551 24.8503 55.1114 25.2995 54 25.3545C55.1114 25.4095 56.0551 25.8587 56.8313 26.7112C57.6075 27.5546 57.9956 28.563 57.9956 29.7273C57.9956 28.9572 58.172 28.2513 58.5248 27.5913C58.8864 26.9312 59.3716 26.3995 59.9802 26.0053C60.5976 25.602 61.2679 25.3911 62 25.3545C60.8798 25.2903 59.9361 24.8503 59.1599 24.0069C58.3837 23.1635 57.9956 22.1642 57.9956 21C57.9956 22.1642 57.6075 23.1635 56.8313 24.0069ZM81 25.3545C82.1114 25.2995 83.0551 24.8503 83.8313 24.0069C84.6075 23.1635 84.9956 22.1642 84.9956 21C84.9956 22.1642 85.3837 23.1635 86.1599 24.0069C86.9361 24.8503 87.8798 25.2903 89 25.3545C88.2679 25.3911 87.5976 25.602 86.9802 26.0053C86.3716 26.3995 85.8864 26.9312 85.5248 27.5913C85.172 28.2513 84.9956 28.9572 84.9956 29.7273C84.9956 28.563 84.6075 27.5546 83.8313 26.7112C83.0551 25.8587 82.1114 25.4095 81 25.3545ZM136 36.3545C137.111 36.2995 138.055 35.8503 138.831 35.0069C139.607 34.1635 139.996 33.1642 139.996 32C139.996 33.1642 140.384 34.1635 141.16 35.0069C141.936 35.8503 142.88 36.2903 144 36.3545C143.268 36.3911 142.598 36.602 141.98 37.0053C141.372 37.3995 140.886 37.9312 140.525 38.5913C140.172 39.2513 139.996 39.9572 139.996 40.7273C139.996 39.563 139.607 38.5546 138.831 37.7112C138.055 36.8587 137.111 36.4095 136 36.3545ZM101.831 49.0069C101.055 49.8503 100.111 50.2995 99 50.3545C100.111 50.4095 101.055 50.8587 101.831 51.7112C102.607 52.5546 102.996 53.563 102.996 54.7273C102.996 53.9572 103.172 53.2513 103.525 52.5913C103.886 51.9312 104.372 51.3995 104.98 51.0053C105.598 50.602 106.268 50.3911 107 50.3545C105.88 50.2903 104.936 49.8503 104.16 49.0069C103.384 48.1635 102.996 47.1642 102.996 46C102.996 47.1642 102.607 48.1635 101.831 49.0069Z"
-                      fill="currentColor"
-                    ></path>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 55" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M135.831 3.00688C135.055 3.85027 134.111 4.29946 133 4.35447C134.111 4.40947 135.055 4.85867 135.831 5.71123C136.607 6.55462 136.996 7.56303 136.996 8.72727C136.996 7.95722 137.172 7.25134 137.525 6.59129C137.886 5.93124 138.372 5.39954 138.98 5.00535C139.598 4.60199 140.268 4.39114 141 4.35447C139.88 4.2903 138.936 3.85027 138.16 3.00688C137.384 2.16348 136.996 1.16425 136.996 0C136.996 1.16425 136.607 2.16348 135.831 3.00688ZM31 23.3545C32.1114 23.2995 33.0551 22.8503 33.8313 22.0069C34.6075 21.1635 34.9956 20.1642 34.9956 19C34.9956 20.1642 35.3837 21.1635 36.1599 22.0069C36.9361 22.8503 37.8798 23.2903 39 23.3545C38.2679 23.3911 37.5976 23.602 36.9802 24.0053C36.3716 24.3995 35.8864 24.9312 35.5248 25.5913C35.172 26.2513 34.9956 26.9572 34.9956 27.7273C34.9956 26.563 34.6075 25.5546 33.8313 24.7112C33.0551 23.8587 32.1114 23.4095 31 23.3545ZM0 36.3545C1.11136 36.2995 2.05513 35.8503 2.83131 35.0069C3.6075 34.1635 3.99559 33.1642 3.99559 32C3.99559 33.1642 4.38368 34.1635 5.15987 35.0069C5.93605 35.8503 6.87982 36.2903 8 36.3545C7.26792 36.3911 6.59757 36.602 5.98015 37.0053C5.37155 37.3995 4.88644 37.9312 4.52481 38.5913C4.172 39.2513 3.99559 39.9572 3.99559 40.7273C3.99559 39.563 3.6075 38.5546 2.83131 37.7112C2.05513 36.8587 1.11136 36.4095 0 36.3545ZM56.8313 24.0069C56.0551 24.8503 55.1114 25.2995 54 25.3545C55.1114 25.4095 56.0551 25.8587 56.8313 26.7112C57.6075 27.5546 57.9956 28.563 57.9956 29.7273C57.9956 28.9572 58.172 28.2513 58.5248 27.5913C58.8864 26.9312 59.3716 26.3995 59.9802 26.0053C60.5976 25.602 61.2679 25.3911 62 25.3545C60.8798 25.2903 59.9361 24.8503 59.1599 24.0069C58.3837 23.1635 57.9956 22.1642 57.9956 21C57.9956 22.1642 57.6075 23.1635 56.8313 24.0069ZM81 25.3545C82.1114 25.2995 83.0551 24.8503 83.8313 24.0069C84.6075 23.1635 84.9956 22.1642 84.9956 21C84.9956 22.1642 85.3837 23.1635 86.1599 24.0069C86.9361 24.8503 87.8798 25.2903 89 25.3545C88.2679 25.3911 87.5976 25.602 86.9802 26.0053C86.3716 26.3995 85.8864 26.9312 85.5248 27.5913C85.172 28.2513 84.9956 28.9572 84.9956 29.7273C84.9956 28.563 84.6075 27.5546 83.8313 26.7112C83.0551 25.8587 82.1114 25.4095 81 25.3545ZM136 36.3545C137.111 36.2995 138.055 35.8503 138.831 35.0069C139.607 34.1635 139.996 33.1642 139.996 32C139.996 33.1642 140.384 34.1635 141.16 35.0069C141.936 35.8503 142.88 36.2903 144 36.3545C143.268 36.3911 142.598 36.602 141.98 37.0053C141.372 37.3995 140.886 37.9312 140.525 38.5913C140.172 39.2513 139.996 39.9572 139.996 40.7273C139.996 39.563 139.607 38.5546 138.831 37.7112C138.055 36.8587 137.111 36.4095 136 36.3545ZM101.831 49.0069C101.055 49.8503 100.111 50.2995 99 50.3545C100.111 50.4095 101.055 50.8587 101.831 51.7112C102.607 52.5546 102.996 53.563 102.996 54.7273C102.996 53.9572 103.172 53.2513 103.525 52.5913C103.886 51.9312 104.372 51.3995 104.98 51.0053C105.598 50.602 106.268 50.3911 107 50.3545C105.88 50.2903 104.936 49.8503 104.16 49.0069C103.384 48.1635 102.996 47.1642 102.996 46C102.996 47.1642 102.607 48.1635 101.831 49.0069Z" fill="currentColor"></path>
                   </svg>
                 </div>
                 <div class="theme-switch__circle-container">
@@ -341,254 +62,205 @@ npm install</code></pre>
               </div>
             </label>
           </li>
-          <li>
-            <a href="https://github.com/NovelSynth/NovelSynth" target="_blank"
-              ><i class="fab fa-github fa-2x"></i
-            ></a>
-          </li>
+          <li><a href="https://github.com/LifeExperimentalist/novelsynth" target="_blank">
+            <i class="fab fa-github"></i>
+          </a></li>
         </ul>
       </div>
     </nav>
 
-    <header class="hero">
-      <div class="hero-content">
-        <div class="hero-badge">🤖 AI-POWERED BROWSER EXTENSION</div>
-        <h1 class="hero-title">
-          Enhance Your Reading Experience
-          <span class="highlight">With AI Intelligence!</span>
-        </h1>
-        <p class="hero-description">
-          NovelSynth brings AI-powered summaries, analysis, and insights to web
-          novels, articles, and long-form content. Get key points, chapter
-          summaries, and smart suggestions while you read.
-        </p>
-        <div class="hero-buttons">
-          <a href="#install" class="btn btn-primary">
-            <i class="fas fa-download"></i>
-            Install Extension
-          </a>
-          <a
-            href="https://github.com/NovelSynth/NovelSynth"
-            class="btn btn-secondary"
-          >
-            <i class="fab fa-github"></i>
-            View on GitHub
-          </a>
+    <!-- Hero Section -->
+<section class="hero">
+  <div class="container hero-layout">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <i class="fas fa-magic"></i>
+        AI-Powered Reading Companion
+      </div>
+      <h1 class="hero-title">
+        Transform Your <span class="highlight">Reading Journey</span><br />
+        With AI Intelligence
+      </h1>
+      <p class="hero-description">
+        NovelSynth brings AI-powered summaries, character arcs, and deep insights to every chapter of your favorite web novels and fanfiction. Stay immersed and informed.
+      </p>
+      <div class="hero-buttons">
+        <a href="#installation" class="btn btn-primary">
+          <i class="fas fa-download"></i> Install Extension
+        </a>
+        <a href="https://github.com/LifeExperimentalist/novelsynth" class="btn btn-secondary" target="_blank">
+          <i class="fab fa-github"></i> View on GitHub
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number">5+</span>
+          <span class="stat-label">AI Providers</span>
         </div>
-        <div class="hero-stats">
-          <div class="stat">
-            <span class="stat-number">5+</span>
-            <span class="stat-label">AI Providers</span>
-          </div>
-          <div class="stat">
-            <span class="stat-number">10+</span>
-            <span class="stat-label">Supported Sites</span>
-          </div>
-          <div class="stat">
-            <span class="stat-number">∞</span>
-            <span class="stat-label">Content Types</span>
-          </div>
+        <div class="stat">
+          <span class="stat-number">15+</span>
+          <span class="stat-label">Supported Sites</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">∞</span>
+          <span class="stat-label">Stories Enhanced</span>
         </div>
       </div>
-      <div class="hero-visual">
-        <div class="browser-window">
-          <div class="browser-header">
-            <div class="browser-buttons">
-              <span class="browser-btn red"></span>
-              <span class="browser-btn yellow"></span>
-              <span class="browser-btn green"></span>
-            </div>
-            <span class="browser-url">novelsite.com/chapter-1</span>
-          </div>
-          <div class="browser-content">
-            <div class="content-text">
-              <p>The ancient dragon emerged from the misty mountains...</p>
-              <p>His scales gleamed in the moonlight as he...</p>
-            </div>
-            <div class="novelsynth-popup">
-              <div class="popup-header">
-                <i class="fas fa-robot"></i>
-                NovelSynth AI Summary
-              </div>
-              <div class="popup-content">
-                ✨ Key Points: Dragon introduction, mystical setting<br />
-                📝 Summary: Epic fantasy chapter beginning<br />
-                💡 Suggestion: Check character relationships
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
+    </div>
 
+    <div class="reading-demo">
+      <div class="book-mockup">
+        <div class="chapter-dropdown" style="margin-bottom: 1.5rem; text-align: left;">
+          <label for="chapter-select" style="font-weight: 600; margin-right: 0.5rem;">Select Chapter:</label>
+          <select id="chapter-select" style="padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid #ccc;">
+            <option>Chapter 46: The Calm Before</option>
+            <option selected>Chapter 47: The Dragon's Awakening</option>
+            <option>Chapter 48: The Aftermath</option>
+          </select>
+        </div>
+        <div class="chapter-content">
+          <h3>Chapter 47: The Dragon's Awakening</h3>
+          <p>
+            The ancient dragon stirred from its centuries-long slumber, scales shimmering
+            like molten gold in the moonlight. Elena felt the ground tremble beneath her feet
+            as the massive creature opened eyes that held the wisdom of ages...
+          </p>
+          <p class="chapter-end">
+            The prophecy was finally coming to pass, and she was at the center of it all.
+          </p>
+        </div>
+        <div class="chapter-actions" style="display: flex; gap: 1rem; margin: 1.5rem 0 1rem 0;">
+          <button class="btn btn-primary" id="enhance-btn"><i class="fas fa-magic"></i> Enhance</button>
+          <button class="btn btn-secondary" id="summarize-btn"><i class="fas fa-align-left"></i> Summarize</button>
+        </div>
+        <div class="ai-insight">
+          <div class="ai-insight-header">
+            <i class="fas fa-robot"></i>
+            NovelSynth AI Analysis
+          </div>
+          <div class="ai-insight-content">
+            <strong>Key Themes:</strong> Awakening, destiny, ancient power<br>
+            <strong>Character Arc:</strong> Elena's pivotal moment of realization<br>
+            <strong>Suggestion:</strong> This scene marks the transition to Act III - expect major plot developments
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+    <!-- Features Section -->
     <section id="features" class="features">
       <div class="container">
         <div class="section-header">
-          <h2>Game-Like Features for Coding</h2>
-          <p>
-            All the checkpoint mechanics you love from gaming, now in VS Code
-          </p>
+          <h2>📚 Features for Novel Enthusiasts</h2>
+          <p>Every feature designed with readers in mind - from binge-reading sessions to literary analysis</p>
         </div>
         <div class="features-grid">
           <div class="feature-card">
-            <div class="feature-icon">💾</div>
-            <h3>Quick Save/Load</h3>
-            <p>
-              <span class="shortcut" data-shortcut="save"></span>
-              to save,
-              <span class="shortcut" data-shortcut="restore"></span>
-              to restore. Just like your favorite games!
-            </p>
+            <div class="feature-icon">📖</div>
+            <h3>Smart Chapter Summaries</h3>
+            <p>Get AI-generated summaries of each chapter to help you remember plot points and character developments across long series.</p>
           </div>
           <div class="feature-card">
-            <div class="feature-icon">📍</div>
-            <h3>Named Checkpoints</h3>
-            <p>
-              Give your save points descriptive names like "Before Boss Fight"
-              or "Working UI"
-            </p>
+            <div class="feature-icon">👥</div>
+            <h3>Character Relationship Tracking</h3>
+            <p>Keep track of complex character relationships, family trees, and evolving dynamics in multi-book series.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔮</div>
+            <h3>Plot Prediction & Analysis</h3>
+            <p>AI analyzes plot patterns and foreshadowing to provide insights into possible future developments.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">✨</div>
+            <h3>Reading Experience Enhancement</h3>
+            <p>Improve machine-translated content, fix grammar issues, and enhance readability without losing the author's voice.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🌍</div>
+            <h3>Multi-Language Support</h3>
+            <p>Works with novels from around the world - Chinese, Korean, Japanese web novels and their translations.</p>
           </div>
           <div class="feature-card">
             <div class="feature-icon">⚡</div>
-            <h3>Instant Restore</h3>
-            <p>Restore your entire project to any save point in seconds</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">🎯</div>
-            <h3>Multiple Save Slots</h3>
-            <p>Keep up to 50 save points per project folder</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">📁</div>
-            <h3>Multi-Root Support</h3>
-            <p>
-              Each workspace folder maintains its own independent save points
-            </p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">⚙️</div>
-            <h3>Smart Exclusions</h3>
-            <p>Configure what files to ignore (node_modules, .git, etc.)</p>
+            <h3>Instant Toggle</h3>
+            <p>Switch between original and enhanced content instantly to compare and choose your preferred reading experience.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="comparison">
+    <!-- Supported Sites -->
+    <section id="supported-sites" class="supported-sites">
       <div class="container">
         <div class="section-header">
-          <h2>Perfect For These Scenarios</h2>
+          <h2>🌐 Your Favorite Reading Sites</h2>
+          <p>NovelSynth works on all major novel and story platforms</p>
         </div>
         <div class="comparison-grid">
           <div class="scenario good">
-            <h3>✅ Perfect For</h3>
+            <h3>📚 Western Fiction</h3>
             <ul>
-              <li>🧪 Experimenting with new ideas</li>
-              <li>📚 Following coding tutorials</li>
-              <li>🚀 Quick prototypes & demos</li>
-              <li>🎨 Creative coding projects</li>
-              <li>🔧 Learning new frameworks</li>
-              <li>📝 Documentation examples</li>
+              <li>• FanFiction.Net</li>
+              <li>• Archive of Our Own</li>
+              <li>• Royal Road</li>
+              <li>• Wattpad</li>
+              <li>• WebNovel.com</li>
             </ul>
           </div>
-          <div class="scenario bad">
-            <h3>❌ Not Recommended</h3>
+          <div class="scenario good">
+            <h3>🏮 Asian Web Novels</h3>
             <ul>
-              <li>🏢 Large production codebases</li>
-              <li>👥 Team collaboration projects</li>
-              <li>📊 Code that needs detailed history</li>
-              <li>🔒 Professional development workflows</li>
-              <li>📈 Long-term version tracking</li>
-              <li>🔀 Branch-based development</li>
+              <li>• Ranobes.net</li>
+              <li>• NovelUpdates</li>
+              <li>• Chrysanthemum Garden</li>
+              <li>• LightNovelWorld</li>
+              <li>• ReadLightNovel</li>
             </ul>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="usage" class="usage">
+    <!-- Installation -->
+    <section id="installation" class="usage">
       <div class="container">
         <div class="section-header">
-          <h2>How to Use</h2>
-          <p>Simple as save/load in your favorite game</p>
+          <h2>How to Install</h2>
+          <p>Get NovelSynth running in just a few steps</p>
         </div>
         <div class="usage-steps">
           <div class="step">
             <div class="step-number">1</div>
             <div class="step-content">
-              <h3>Make Some Code</h3>
-              <p>Write your code, experiment, try new things</p>
+              <h3>Download Extension</h3>
+              <p>Download the latest release from GitHub or build from source</p>
             </div>
           </div>
           <div class="step">
             <div class="step-number">2</div>
             <div class="step-content">
-              <h3>Create Save Point</h3>
-              <p>
-                Press <code class="shortcut" data-shortcut="save"></code> and
-                name your checkpoint
-              </p>
+              <h3>Install in Browser</h3>
+              <p>Load the extension in Chrome/Firefox developer mode</p>
             </div>
           </div>
           <div class="step">
             <div class="step-number">3</div>
             <div class="step-content">
-              <h3>Keep Experimenting</h3>
-              <p>Try risky changes, knowing you can always go back</p>
+              <h3>Configure AI</h3>
+              <p>Add your API keys for supported AI providers</p>
             </div>
           </div>
           <div class="step">
             <div class="step-number">4</div>
             <div class="step-content">
-              <h3>Restore If Needed</h3>
-              <p>
-                Press <code class="shortcut" data-shortcut="restore"></code> to
-                load any save point
-              </p>
+              <h3>Start Reading</h3>
+              <p>Visit any supported site and enhance your reading experience!</p>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="docs" class="documentation">
-      <div class="container">
-        <div class="section-header">
-          <h2>Documentation</h2>
-        </div>
-        <div class="docs-grid">
-          <a
-            href="https://github.com/Life-Experimentalist/Global-Save-State/wiki#-global-save-state"
-            class="doc-card"
-          >
-            <i class="fas fa-book"></i>
-            <h3>Getting Started</h3>
-            <p>Installation and basic usage guide</p>
-          </a>
-          <a
-            href="https://github.com/Life-Experimentalist/Global-Save-State/blob/main/docs/ARCHITECTURE.md"
-            class="doc-card"
-          >
-            <i class="fas fa-sitemap"></i>
-            <h3>Architecture</h3>
-            <p>How the extension works under the hood</p>
-          </a>
-          <a
-            href="https://github.com/Life-Experimentalist/Global-Save-State/blob/main/docs/ROADMAP.md"
-            class="doc-card"
-          >
-            <i class="fas fa-road"></i>
-            <h3>Roadmap</h3>
-            <p>Future plans and upcoming features</p>
-          </a>
-          <a
-            href="https://github.com/Life-Experimentalist/Global-Save-State/blob/main/.github/ISSUE_TEMPLATE/CONTRIBUTING.md"
-            class="doc-card"
-          >
-            <i class="fas fa-hands-helping"></i>
-            <h3>Contributing</h3>
-            <p>How to contribute to the project</p>
-          </a>
         </div>
       </div>
     </section>
@@ -597,50 +269,29 @@ npm install</code></pre>
       <div class="container">
         <div class="footer-content">
           <div class="footer-info">
-            <img
-              src="icon.jpg"
-              alt="Global Save State Logo"
-              class="footer-logo"
-            />
-            <p>Save points for your code - just like in games!</p>
+            <img src="src/icons/icon48.png" alt="NovelSynth Logo" class="footer-logo" />
+            <p>Transform your reading experience with AI</p>
           </div>
           <div class="footer-links">
             <div class="link-group">
               <h4>Extension</h4>
-              <a
-                href="https://marketplace.visualstudio.com/items?itemName=VKrishna04.global-save-state"
-                >VS Code Marketplace</a
-              >
-              <a
-                href="https://github.com/Life-Experimentalist/global-save-state/releases"
-                >Releases</a
-              >
+              <a href="https://github.com/LifeExperimentalist/novelsynth">GitHub Repository</a>
+              <a href="https://github.com/LifeExperimentalist/novelsynth/releases">Releases</a>
             </div>
             <div class="link-group">
               <h4>Support</h4>
-              <a
-                href="https://github.com/Life-Experimentalist/Global-Save-State/issues/new?labels=bug&template=bug_report.md"
-                >Report Bug</a
-              >
-              <a
-                href="https://github.com/Life-Experimentalist/Global-Save-State/issues/new?labels=enhancement&template=feature_request.md"
-                >Feature Request</a
-              >
+              <a href="https://github.com/LifeExperimentalist/novelsynth/issues">Report Issues</a>
+              <a href="https://github.com/LifeExperimentalist/novelsynth/wiki">Documentation</a>
             </div>
             <div class="link-group">
               <h4>Connect</h4>
-              <a href="https://github.com/Life-Experimentalist">GitHub</a>
-              <a href="mailto:krishnagsvv@gmail.com">Email</a>
+              <a href="https://github.com/LifeExperimentalist">Developer</a>
+              <a href="mailto:support@novelsynth.com">Contact</a>
             </div>
           </div>
         </div>
         <div class="footer-bottom">
-          <p>
-            Made with ❤️ by
-            <a href="https://github.com/Life-Experimentalist">VKrishna04</a>
-            &copy; 2025 Global Save State.
-            <br />Licensed under Apache 2.0
-          </p>
+          <p>&copy; 2025 NovelSynth. Open source project under MIT License.</p>
         </div>
       </div>
     </footer>

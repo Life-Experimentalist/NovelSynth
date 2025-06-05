@@ -1,5 +1,6 @@
 import { BaseWebsiteHandler } from "./website-handlers/BaseWebsiteHandler";
 import { FanfictionHandler } from "./website-handlers/fanfiction-handler";
+import { RanobesHandler } from "./website-handlers/RanobesHandler";
 import { AIServiceManager } from "../services/ai/AIServiceManager";
 import type { ProcessingResult, ContentType } from "../types";
 
@@ -11,16 +12,26 @@ export class ContentProcessor {
     this.aiServiceManager = new AIServiceManager();
     this.detectWebsiteHandler();
   }
-
   /**
    * Detect which website handler to use based on current URL
    */
   private detectWebsiteHandler(): void {
     const hostname = window.location.hostname.toLowerCase();
-
     if (hostname.includes("fanfiction.net")) {
       this.currentHandler = new FanfictionHandler();
-    } else {
+    } else if (
+      hostname.includes("ranobes.net") ||
+      hostname.includes("ranobes.com") ||
+      hostname.includes("ranobes.top")
+    ) {
+      // Use RanobesHandler for ranobes.net and its variants
+      this.currentHandler = new RanobesHandler();
+    }
+    // Add your new handlers here like this:
+    // else if (hostname.includes("yoursite.com")) {
+    //   this.currentHandler = new YourSiteHandler();
+    // }
+    else {
       this.currentHandler = new BaseWebsiteHandler();
     }
   }

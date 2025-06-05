@@ -7,8 +7,9 @@ yarn-error.log*
 # Build and Distribution Files
 scripts/dist/
 build/
+dist/*
+dist/**/*
 *.tgz
-*.zip
 *.crx
 *.xpi
 
