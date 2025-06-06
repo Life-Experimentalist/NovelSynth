@@ -29,7 +29,7 @@
     "update-footer": "node scripts/update-footer.js",
     "update-footer-force": "node scripts/update-footer.js --force",
     "check-footer": "node scripts/update-footer.js --check",
-    "build": "npm run update-footer && webpack --mode=production",
+    "build": "npm run update-footer && webpack",
     "build:dev": "webpack --mode=development",
     "build:extension": "node scripts/build-extension.js",
     "package": "npm run build && node scripts/create-packages.js",

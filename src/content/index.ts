@@ -1,11 +1,15 @@
 import type { ExtensionMessage, ContentAnalysis, UserSettings } from "../types";
 import { ProcessingBanner } from "../utils/ProcessingBanner";
 import { WordCounter } from "../utils/WordCounter";
+import { ChapterEnhancementUI } from "../utils/ChapterEnhancementUI";
+import { ContentProcessor } from "../utils/ContentProcessor";
+import { ContentDetector } from "../utils/ContentDetector";
 
 class ContentScript {
   private isInitialized = false;
   private analysis: ContentAnalysis | null = null;
   private novelSynthUI: HTMLElement | null = null;
+  private chapterEnhancementUI: ChapterEnhancementUI | null = null;
   private processingBanner: ProcessingBanner | null = null;
   private settings: UserSettings | null = null;
 
@@ -41,9 +45,9 @@ class ContentScript {
       // Analyze current page content
       await this.analyzeCurrentPage();
 
-      // Only show UI if content is detected as long-form
+      // Show UI based on content type and whether it's a chapter page
       if (this.analysis?.isLongForm) {
-        this.createNovelSynthUI();
+        this.createEnhancementUI();
       }
 
       this.isInitialized = true;
@@ -134,10 +138,184 @@ class ContentScript {
       if (element && element.textContent && element.textContent.length > 500) {
         return element.textContent.trim().replace(/\s+/g, " ");
       }
+    } // Fallback to body content
+    return clone.body?.textContent?.trim().replace(/\s+/g, " ") || "";
+  }
+
+  private isChapterPage(): boolean {
+    // Check URL patterns that typically indicate chapter pages
+    const url = window.location.href.toLowerCase();
+    const pathname = window.location.pathname.toLowerCase();
+
+    // Common chapter URL patterns
+    const chapterPatterns = [
+      /\/chapter[-_]?\d+/i,
+      /\/ch[-_]?\d+/i,
+      /\/part[-_]?\d+/i,
+      /\/episode[-_]?\d+/i,
+      /\/read/i,
+      /\/story/i,
+      /\/fic/i,
+    ];
+
+    if (chapterPatterns.some((pattern) => pattern.test(pathname))) {
+      return true;
     }
 
-    // Fallback to body content
-    return clone.body?.textContent?.trim().replace(/\s+/g, " ") || "";
+    // Check for common novel/story domains
+    const hostname = window.location.hostname.toLowerCase();
+    const novelDomains = [
+      "fanfiction.net",
+      "archiveofourown.org",
+      "royalroad.com",
+      "webnovel.com",
+      "ranobes.net",
+      "lightnovelworld.com",
+      "novelfull.com",
+    ];
+
+    if (novelDomains.some((domain) => hostname.includes(domain))) {
+      // On novel sites, check for content length and structure
+      const contentSelectors = [
+        ".chapter-content",
+        ".story-content",
+        "#storytext",
+        ".text-chapter",
+        ".chapter-text",
+        ".content",
+      ];
+
+      for (const selector of contentSelectors) {
+        const element = document.querySelector(selector);
+        if (
+          element &&
+          element.textContent &&
+          element.textContent.length > 1000
+        ) {
+          return true;
+        }
+      }
+    }
+
+    // Check if page has substantial narrative content
+    if (
+      this.analysis &&
+      this.analysis.contentType === "novel" &&
+      this.analysis.wordCount > 500
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  private findContentInsertionPoint(): {
+    element: HTMLElement;
+    position: "before" | "after" | "inside";
+  } | null {
+    // Try to find the best insertion point for the enhancement UI
+    const contentSelectors = [
+      ".chapter-content",
+      ".story-content",
+      "#storytext",
+      ".text-chapter",
+      ".chapter-text",
+      "main article",
+      "main",
+      "article",
+      ".content",
+      ".post-content",
+      ".entry-content",
+    ];
+
+    for (const selector of contentSelectors) {
+      const element = document.querySelector(selector) as HTMLElement;
+      if (element && element.textContent && element.textContent.length > 500) {
+        return {
+          element: element,
+          position: "before",
+        };
+      }
+    }
+
+    // Fallback to body if no content area found
+    return {
+      element: document.body,
+      position: "inside",
+    };
+  }
+
+  private createEnhancementUI(): void {
+    // Check if this looks like a chapter page
+    if (this.isChapterPage()) {
+      this.createChapterEnhancementUI();
+    } else {
+      // Fall back to the floating action button for non-chapter pages
+      this.createNovelSynthUI();
+    }
+  }
+
+  private createChapterEnhancementUI(): void {
+    if (this.chapterEnhancementUI) return;
+
+    // Find the best insertion point
+    const insertionPoint = this.findContentInsertionPoint();
+    if (!insertionPoint) {
+      console.warn(
+        "Could not find suitable insertion point for chapter enhancement UI"
+      );
+      // Fall back to floating action button
+      this.createNovelSynthUI();
+      return;
+    }
+
+    // Create the chapter enhancement UI
+    this.chapterEnhancementUI = new ChapterEnhancementUI(this.settings);
+
+    // Set up the action callback
+    this.chapterEnhancementUI.setActionCallback(async (action: string) => {
+      await this.handleChapterAction(action);
+    });
+
+    // Create and insert the UI
+    this.chapterEnhancementUI.createUI(insertionPoint);
+
+    console.log("Chapter enhancement UI created and inserted");
+  }
+
+  private async handleChapterAction(action: string): Promise<void> {
+    if (!this.chapterEnhancementUI) return;
+
+    try {
+      // Show processing state
+      this.chapterEnhancementUI.showProcessing(
+        action.charAt(0).toUpperCase() + action.slice(1)
+      );
+
+      // Map the action to the existing handler
+      const actionMap: {
+        [key: string]: "enhance" | "summarize" | "analyze" | "suggestions";
+      } = {
+        enhance: "enhance",
+        summarize: "summarize",
+        analyze: "analyze",
+        suggestions: "suggestions",
+        grammar: "enhance", // Grammar check uses enhance with specific options
+        style: "enhance", // Style check uses enhance with specific options
+        translate: "enhance", // Translation uses enhance with specific options
+        dialogue: "enhance", // Dialogue enhancement uses enhance with specific options
+      };
+
+      const mappedAction = actionMap[action] || "enhance";
+      await this.handleAction(mappedAction);
+    } catch (error) {
+      console.error(`Failed to handle ${action}:`, error);
+    } finally {
+      // Hide processing state
+      if (this.chapterEnhancementUI) {
+        this.chapterEnhancementUI.hideProcessing();
+      }
+    }
   }
 
   private createNovelSynthUI(): void {

@@ -20,6 +20,14 @@ export declare class BaseWebsiteHandler {
      */
     formatAfterEnhancement(contentArea: HTMLElement): void;
     /**
+     * Get the ideal insertion point for UI controls
+     * Returns an object with element and position ('before' | 'after' | 'inside')
+     */
+    getUIInsertionPoint(contentArea: HTMLElement): {
+        element: HTMLElement;
+        position: "before" | "after" | "inside";
+    };
+    /**
      * Check if element is a valid content area
      */
     private isValidContentArea;

@@ -135,6 +135,92 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  // --- Chapter Action Buttons Logic ---
+  const allActions = [
+    {
+      value: "enhance",
+      label: "Enhance",
+      icon: "fa-magic",
+      btnClass: "btn-primary",
+    },
+    {
+      value: "summarize",
+      label: "Summarize",
+      icon: "fa-align-left",
+      btnClass: "btn-secondary",
+    },
+    {
+      value: "analyze",
+      label: "Analyze",
+      icon: "fa-chart-bar",
+      btnClass: "btn-secondary",
+    },
+    {
+      value: "translate",
+      label: "Translate",
+      icon: "fa-language",
+      btnClass: "btn-secondary",
+    },
+    // Add more actions here as needed
+  ];
+  let lastTwo = ["enhance", "summarize"];
+
+  const actionsDropdown = document.getElementById("chapter-action-dropdown");
+  const actionsBar = document.querySelector(".chapter-actions");
+
+  function renderActionButtons() {
+    actionsBar.innerHTML = "";
+    lastTwo.forEach((actionValue) => {
+      const action = allActions.find((a) => a.value === actionValue);
+      if (action) {
+        const btn = document.createElement("button");
+        btn.className = `btn ${action.btnClass} chapter-action-btn`;
+        btn.setAttribute("data-action", action.value);
+        btn.innerHTML = `<i class='fas ${action.icon}'></i> ${action.label}`;
+        actionsBar.appendChild(btn);
+      }
+    });
+  }
+
+  // Initial render
+  if (actionsBar) renderActionButtons();
+
+  // Handle dropdown change
+  if (actionsDropdown) {
+    actionsDropdown.addEventListener("change", function () {
+      const val = actionsDropdown.value;
+      if (!lastTwo.includes(val)) {
+        lastTwo = [val, lastTwo[0]];
+        renderActionButtons();
+      }
+      triggerChapterAction(val);
+    });
+  }
+
+  // Handle button clicks
+  if (actionsBar) {
+    actionsBar.addEventListener("click", function (e) {
+      const btn = e.target.closest(".chapter-action-btn");
+      if (btn) {
+        const val = btn.getAttribute("data-action");
+        if (!lastTwo.includes(val)) {
+          lastTwo = [val, lastTwo[0]];
+          renderActionButtons();
+        } else if (lastTwo[0] !== val) {
+          lastTwo = [val, lastTwo[0]];
+          renderActionButtons();
+        }
+        triggerChapterAction(val);
+      }
+    });
+  }
+
+  // Dummy handler for actions
+  function triggerChapterAction(action) {
+    // You can replace this with actual logic for each action
+    alert(`Action: ${action.charAt(0).toUpperCase() + action.slice(1)}`);
+  }
 });
 
 // Particle effect for hero section

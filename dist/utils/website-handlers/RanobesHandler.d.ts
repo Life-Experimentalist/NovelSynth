@@ -14,6 +14,14 @@ export declare class RanobesHandler extends BaseWebsiteHandler {
     getChapterNavigation(): any;
     formatAfterEnhancement(contentArea: HTMLElement): void;
     /**
+     * Get ideal insertion point for UI controls
+     * Override from base to provide Ranobes-specific placement
+     */
+    getUIInsertionPoint(contentArea: HTMLElement): {
+        element: HTMLElement;
+        position: "before" | "after" | "inside";
+    };
+    /**
      * Get site-specific prompt for Ranobes
      */
     getSiteSpecificPrompt(): string;

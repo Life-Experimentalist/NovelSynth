@@ -65,4 +65,12 @@ export declare class StorageManager {
      * Generate a simple hash for content to detect changes
      */
     private static generateContentHash;
+    /**
+     * Get the last used actions for chapter enhancement UI
+     */
+    static getLastUsedActions(): Promise<string[]>;
+    /**
+     * Set the last used actions for chapter enhancement UI
+     */
+    static setLastUsedActions(actions: string[]): Promise<void>;
 }

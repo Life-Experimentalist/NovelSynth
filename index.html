@@ -118,6 +118,16 @@
             <option>Chapter 48: The Aftermath</option>
           </select>
         </div>
+        <div class="chapter-action-bar" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+          <label for="chapter-action-dropdown" style="font-weight: 600; margin-right: 0.5rem;">Actions:</label>
+          <select id="chapter-action-dropdown" style="padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid #ccc; min-width: 180px;">
+            <option value="enhance">Enhance</option>
+            <option value="summarize">Summarize</option>
+            <option value="analyze">Analyze</option>
+            <option value="translate">Translate</option>
+            <!-- Add more actions here as needed -->
+          </select>
+        </div>
         <div class="chapter-content">
           <h3>Chapter 47: The Dragon's Awakening</h3>
           <p>
@@ -130,8 +140,8 @@
           </p>
         </div>
         <div class="chapter-actions" style="display: flex; gap: 1rem; margin: 1.5rem 0 1rem 0;">
-          <button class="btn btn-primary" id="enhance-btn"><i class="fas fa-magic"></i> Enhance</button>
-          <button class="btn btn-secondary" id="summarize-btn"><i class="fas fa-align-left"></i> Summarize</button>
+          <button class="btn btn-primary chapter-action-btn" data-action="enhance"><i class="fas fa-magic"></i> Enhance</button>
+          <button class="btn btn-secondary chapter-action-btn" data-action="summarize"><i class="fas fa-align-left"></i> Summarize</button>
         </div>
         <div class="ai-insight">
           <div class="ai-insight-header">
@@ -216,7 +226,7 @@
             <ul>
               <li>• Ranobes.net</li>
               <li>• NovelUpdates</li>
-              <li>• Chrysanthemum Garden</li>
+              <!-- <li>• Chrysanthemum Garden</li> -->
               <li>• LightNovelWorld</li>
               <li>• ReadLightNovel</li>
             </ul>

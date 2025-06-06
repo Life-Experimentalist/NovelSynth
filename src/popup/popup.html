@@ -1,21 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NovelSynth</title>
-    <style>
-      body {
-        width: 400px;
-        min-height: 500px;
-        margin: 0;
-        padding: 0;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          sans-serif;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="src/icons/icon32.png" alt="NovelSynth" class="logo" />
+            <h1>NovelSynth</h1>
+            <p class="subtitle">AI-powered content enhancement</p>
+        </div>
+
+        <!-- Tab navigation -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="enhance">Enhance</button>
+            <button class="tab-btn" data-tab="analyze">Analyze</button>
+            <button class="tab-btn" data-tab="summarize">Summarize</button>
+            <button class="tab-btn" data-tab="settings">Settings</button>
+            <button class="tab-btn" data-tab="about">About</button>
+        </div>
+
+        <!-- Content Area -->
+        <div class="popup-content">
+            <!-- Enhance Tab -->
+            <div id="enhance" class="tab-content active">
+                <div class="page-status">
+                    <div class="status-item">
+                        <span class="label">Page Status:</span>
+                        <span class="value" id="pageStatus">Ready</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">Content Type:</span>
+                        <span class="value" id="contentType">Auto-detected</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">Word Count:</span>
+                        <span class="value" id="wordCount">-</span>
+                    </div>
+                </div>
+
+                <div class="function-settings">
+                    <h3>🎨 Enhancement Settings</h3>
+                    <div class="function-row">
+                        <div class="setting">
+                            <label for="enhanceProvider">Provider:</label>
+                            <select id="enhanceProvider">
+                                <option value="gemini">Google Gemini</option>
+                                <option value="openai">OpenAI</option>
+                                <option value="anthropic">Anthropic</option>
+                                <option value="local">Local Model</option>
+                            </select>
+                        </div>
+                        <div class="setting">
+                            <label for="enhanceModel">Model:</label>
+                            <select id="enhanceModel">
+                                <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="setting">
+                        <label for="enhanceApiKey">API Key:</label>
+                        <div class="input-group">
+                            <input type="password" id="enhanceApiKey" placeholder="Enter API key for enhancement" />
+                            <button id="testEnhanceApiKey" class="icon-btn">Test</button>
+                        </div>
+                    </div>
+                    <div class="setting">
+                        <label for="enhancePrompt">Custom Prompt:</label>
+                        <textarea id="enhancePrompt" rows="3" placeholder="Custom instructions for enhancement..."></textarea>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn primary" id="enhanceBtn">
+                        <span class="btn-icon">✨</span>
+                        <span class="btn-text">Enhance Content</span>
+                    </button>
+                </div>
+
+                <div class="status-message" id="enhanceStatusMessage" style="display: none;">
+                    <div class="status-icon">⚡</div>
+                    <div class="status-text">Processing...</div>
+                </div>
+            </div>
+
+            <!-- Analyze Tab -->
+            <div id="analyze" class="tab-content">
+                <div class="function-settings">
+                    <h3>🔍 Analysis Settings</h3>
+                    <div class="function-row">
+                        <div class="setting">
+                            <label for="analyzeProvider">Provider:</label>
+                            <select id="analyzeProvider">
+                                <option value="gemini">Google Gemini</option>
+                                <option value="openai">OpenAI</option>
+                                <option value="anthropic">Anthropic</option>
+                                <option value="local">Local Model</option>
+                            </select>
+                        </div>
+                        <div class="setting">
+                            <label for="analyzeModel">Model:</label>
+                            <select id="analyzeModel">
+                                <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="setting">
+                        <label for="analyzeApiKey">API Key:</label>
+                        <div class="input-group">
+                            <input type="password" id="analyzeApiKey" placeholder="Enter API key for analysis" />
+                            <button id="testAnalyzeApiKey" class="icon-btn">Test</button>
+                        </div>
+                    </div>
+                    <div class="setting">
+                        <label for="analyzePrompt">Custom Prompt:</label>
+                        <textarea id="analyzePrompt" rows="3" placeholder="Custom instructions for analysis..."></textarea>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn primary" id="analyzeBtn">
+                        <span class="btn-icon">🔍</span>
+                        <span class="btn-text">Analyze Content</span>
+                    </button>
+                    <button class="action-btn" id="suggestionsBtn">
+                        <span class="btn-icon">💡</span>
+                        <span class="btn-text">Get Suggestions</span>
+                    </button>
+                </div>
+
+                <div class="status-message" id="analyzeStatusMessage" style="display: none;">
+                    <div class="status-icon">⚡</div>
+                    <div class="status-text">Processing...</div>
+                </div>
+            </div>
+
+            <!-- Summarize Tab -->
+            <div id="summarize" class="tab-content">
+                <div class="function-settings">
+                    <h3>📋 Summarization Settings</h3>
+                    <div class="function-row">
+                        <div class="setting">
+                            <label for="summarizeProvider">Provider:</label>
+                            <select id="summarizeProvider">
+                                <option value="gemini">Google Gemini</option>
+                                <option value="openai">OpenAI</option>
+                                <option value="anthropic">Anthropic</option>
+                                <option value="local">Local Model</option>
+                            </select>
+                        </div>
+                        <div class="setting">
+                            <label for="summarizeModel">Model:</label>
+                            <select id="summarizeModel">
+                                <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="setting">
+                        <label for="summarizeApiKey">API Key:</label>
+                        <div class="input-group">
+                            <input type="password" id="summarizeApiKey" placeholder="Enter API key for summarization" />
+                            <button id="testSummarizeApiKey" class="icon-btn">Test</button>
+                        </div>
+                    </div>
+                    <div class="setting">
+                        <label for="summarizePrompt">Custom Prompt:</label>
+                        <textarea id="summarizePrompt" rows="3" placeholder="Custom instructions for summarization..."></textarea>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn primary" id="summarizeBtn">
+                        <span class="btn-icon">📋</span>
+                        <span class="btn-text">Create Summary</span>
+                    </button>
+                </div>
+
+                <div class="status-message" id="summarizeStatusMessage" style="display: none;">
+                    <div class="status-icon">⚡</div>
+                    <div class="status-text">Processing...</div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings" class="tab-content">
+                <div class="setting">
+                    <label for="temperatureSlider">
+                        Temperature
+                        <span class="slider-value" id="temperatureValue">0.7</span>
+                    </label>
+                    <input type="range" min="0" max="1" step="0.1" value="0.7" class="slider" id="temperatureSlider">
+                    <div class="description">Controls creativity (0 = deterministic, 1 = creative)</div>
+                </div>
+
+                <div class="setting">
+                    <label for="maxTokens">Max Output Tokens:</label>
+                    <input type="number" id="maxTokens" min="1000" max="32768" value="8192" />
+                    <div class="description">Maximum length of AI response</div>
+                </div>
+
+                <div class="setting">
+                    <label>
+                        <input type="checkbox" id="autoDetect" checked />
+                        Auto-detect content type
+                    </label>
+                </div>
+
+                <div class="setting">
+                    <label>
+                        <input type="checkbox" id="showBanner" checked />
+                        Show processing banner
+                    </label>
+                </div>
+
+                <div class="setting">
+                    <label>
+                        <input type="checkbox" id="enableChunking" checked />
+                        Enable automatic chunking for large content
+                    </label>
+                </div>
+
+                <div class="actions">
+                    <button id="saveSettings" class="btn-primary">Save Settings</button>
+                    <button id="resetSettings" class="btn-secondary">Reset All</button>
+                </div>
+            </div>
+
+            <!-- About Tab -->
+            <div id="about" class="tab-content">
+                <div class="about-section">
+                    <h3>NovelSynth</h3>
+                    <p class="version">Version 1.0.0</p>
+
+                    <div class="about-text">
+                        <p>AI-powered content enhancement for web novels, articles, and long-form content.</p>
+
+                        <h4>Features:</h4>
+                        <ul>
+                            <li>Per-function AI provider selection</li>
+                            <li>Content enhancement with multiple AI models</li>
+                            <li>Intelligent analysis and summarization</li>
+                            <li>Dark/light theme support</li>
+                            <li>Customizable prompts for each function</li>
+                        </ul>
+
+                        <h4>Getting Started:</h4>
+                        <ol>
+                            <li>Configure providers and API keys for each function</li>
+                            <li>Navigate to a content page</li>
+                            <li>Use the enhancement, analysis, or summary features</li>
+                        </ol>
+                    </div>
+
+                    <div class="storage-info">
+                        <div class="info-item">
+                            <span class="label">Enhanced Pages:</span>
+                            <span class="value" id="totalPages">0</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Storage Used:</span>
+                            <span class="value" id="storageUsed">0 KB</span>
+                        </div>
+                    </div>
+
+                    <div class="links">
+                        <a href="https://github.com/LifeExperimentalist/NovelSynth" target="_blank">GitHub</a>
+                        <a href="https://life-experimentalist.github.io/novelsynth" target="_blank">Website</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="status" class="status-bar">Ready</div>
+
+        <!-- Resize handle -->
+        <div class="resize-handle" title="Drag to resize popup"></div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
 </html>

@@ -2,7 +2,7 @@
 
 **AI-powered content enhancement for web novels, articles, and long-form content**
 
-NovelSynth is a cross-browser extension (Firefox/Chrome) that detects long-form content and provides AI-powered enhancement capabilities including content enhancement, summarization, analysis, and intelligent suggestions.
+NovelSynth is a cross-browser extension (Firefox/Chromium) that detects long-form content and provides AI-powered enhancement capabilities including content enhancement, summarization, analysis, and intelligent suggestions.
 
 ![NovelSynth Logo](src/icons/icon128.png)
 

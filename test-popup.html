@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NovelSynth Popup Test</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+
+      .popup-container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        margin: 20px auto;
+        max-width: 400px;
+        overflow: hidden;
+      }
+
+      .test-info {
+        background: #667eea;
+        color: white;
+        padding: 16px;
+        text-align: center;
+      }
+
+      .test-buttons {
+        display: flex;
+        gap: 10px;
+        margin: 20px 0;
+        justify-content: center;
+      }
+
+      .test-btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        background: #667eea;
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .test-btn:hover {
+        background: #5a6fd8;
+      }
+
+      .console-output {
+        background: #1a1a1a;
+        color: #00ff00;
+        padding: 16px;
+        border-radius: 8px;
+        font-family: "Courier New", monospace;
+        font-size: 12px;
+        max-height: 200px;
+        overflow-y: auto;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="test-info">
+      <h1>🧪 NovelSynth Popup Test</h1>
+      <p>
+        Testing the popup functionality outside of the extension environment
+      </p>
+    </div>
+
+    <div class="test-buttons">
+      <button class="test-btn" onclick="openPopupTest()">🚀 Test Popup</button>
+      <button class="test-btn" onclick="testChapterUI()">
+        📖 Test Chapter UI
+      </button>
+      <button class="test-btn" onclick="clearConsole()">
+        🧹 Clear Console
+      </button>
+    </div>
+
+    <div class="popup-container" id="popupContainer">
+      <!-- Popup will be loaded here -->
+    </div>
+
+    <div class="console-output" id="console">
+      <div>📋 Console Output:</div>
+    </div>
+
+    <script>
+      // Mock chrome extension APIs for testing
+      window.chrome = {
+        runtime: {
+          sendMessage: (message, callback) => {
+            logToConsole(`📨 Runtime message: ${JSON.stringify(message)}`);
+            setTimeout(() => {
+              const mockResponse = getMockResponse(message);
+              if (callback) callback(mockResponse);
+            }, 500);
+          },
+        },
+        tabs: {
+          query: (queryInfo, callback) => {
+            logToConsole(`🔍 Tab query: ${JSON.stringify(queryInfo)}`);
+            setTimeout(() => {
+              const mockTab = {
+                id: 1,
+                url: window.location.href,
+                title: document.title,
+              };
+              callback([mockTab]);
+            }, 100);
+          },
+          sendMessage: (tabId, message, callback) => {
+            logToConsole(
+              `📤 Tab message to ${tabId}: ${JSON.stringify(message)}`
+            );
+            setTimeout(() => {
+              const mockResponse = getMockTabResponse(message);
+              if (callback) callback(mockResponse);
+            }, 300);
+          },
+        },
+      };
+
+      function getMockResponse(message) {
+        switch (message.type) {
+          case "GET_SETTINGS":
+            return {
+              success: true,
+              settings: {
+                selectedProvider: "gemini",
+                selectedModels: {
+                  enhance: "gemini-1.5-flash",
+                  summarize: "gemini-1.5-flash",
+                  analyze: "gemini-1.5-flash",
+                  suggestions: "gemini-1.5-flash",
+                },
+                showProcessingBanner: true,
+                showWordCount: true,
+              },
+            };
+          case "SAVE_SETTINGS":
+            return { success: true };
+          case "GET_STORAGE_STATS":
+            return {
+              success: true,
+              stats: {
+                totalItems: 42,
+                totalSize: "1.2 MB",
+                lastCleanup: "June 6, 2025",
+              },
+            };
+          default:
+            return { success: true };
+        }
+      }
+
+      function getMockTabResponse(message) {
+        switch (message.type) {
+          case "GET_PAGE_ANALYSIS":
+            return {
+              success: true,
+              analysis: {
+                isLongForm: true,
+                contentType: "Novel Chapter",
+                wordCount: 2450,
+              },
+            };
+          case "GET_AI_RESPONSE":
+            return {
+              success: true,
+              response: `Mock ${message.payload.type} response generated successfully!`,
+            };
+          default:
+            return { success: true };
+        }
+      }
+
+      function logToConsole(message) {
+        const console = document.getElementById("console");
+        const timestamp = new Date().toLocaleTimeString();
+        console.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+        console.scrollTop = console.scrollHeight;
+      }
+
+      function clearConsole() {
+        document.getElementById("console").innerHTML =
+          "<div>📋 Console Output:</div>";
+      }
+
+      async function openPopupTest() {
+        logToConsole("🚀 Loading NovelSynth popup...");
+
+        try {
+          // Load the popup HTML
+          const response = await fetch("dist/popup.html");
+          const html = await response.text();
+
+          // Load the popup CSS
+          const cssResponse = await fetch("dist/popup.css");
+          const css = await cssResponse.text();
+
+          // Create style element
+          const styleElement = document.createElement("style");
+          styleElement.textContent = css;
+          document.head.appendChild(styleElement);
+
+          // Insert the popup HTML
+          document.getElementById("popupContainer").innerHTML = html;
+
+          // Load the popup JavaScript
+          const script = document.createElement("script");
+          script.src = "dist/popup.js";
+          script.onload = () => {
+            logToConsole("✅ Popup loaded successfully!");
+          };
+          script.onerror = () => {
+            logToConsole("❌ Failed to load popup script");
+          };
+          document.body.appendChild(script);
+        } catch (error) {
+          logToConsole(`❌ Error loading popup: ${error.message}`);
+        }
+      }
+
+      async function testChapterUI() {
+        logToConsole("📖 Testing Chapter Enhancement UI...");
+
+        // This would test the chapter enhancement UI
+        // For now, just log that it would be tested
+        logToConsole(
+          "📖 Chapter UI test would run here (requires chapter page)"
+        );
+      }
+
+      // Auto-load popup on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        logToConsole("🌟 Page loaded, ready for testing");
+        logToConsole(
+          '💡 Click "Test Popup" to load the NovelSynth popup interface'
+        );
+      });
+    </script>
+  </body>
+</html>

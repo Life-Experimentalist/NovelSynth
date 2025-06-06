@@ -3,11 +3,10 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  mode: "production",
+  mode: "development", // Force development mode
   entry: {
     background: "./src/background.ts",
     content: "./src/content.ts",
-    popup: "./src/popup.ts",
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -34,10 +33,24 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         { from: "manifest.json", to: "manifest.json" },
-        { from: "popup.html", to: "popup.html" },
-        { from: "icons", to: "icons", noErrorOnMissing: true },
+        { from: "src/popup/popup.html", to: "popup.html" },
+        { from: "src/popup/popup.css", to: "popup.css" },
+        { from: "src/popup/popup.js", to: "popup.js" },
+        { from: "src/styles/content.css", to: "content.css" },
+        {
+          from: "src/icons",
+          to: "src/icons",
+          globOptions: {
+            ignore: ["**/icon-dark.png", "**/icon-light.png"],
+          },
+        },
       ],
     }),
   ],
+  performance: {
+    hints: false,
+    maxAssetSize: 512000,
+    maxEntrypointSize: 512000,
+  },
   devtool: "cheap-module-source-map",
 };

@@ -206,6 +206,28 @@ export class RanobesHandler extends BaseWebsiteHandler {
     });
   }
 
+  /**
+   * Get ideal insertion point for UI controls
+   * Override from base to provide Ranobes-specific placement
+   */
+  override getUIInsertionPoint(contentArea: HTMLElement): {
+    element: HTMLElement;
+    position: "before" | "after" | "inside";
+  } {
+    // Look for a better insertion point - we want to insert before the content
+    // but after the title and possibly other elements
+    const textChapter = document.querySelector(".text-chapter") as HTMLElement;
+    if (textChapter) {
+      return {
+        element: textChapter,
+        position: "before",
+      };
+    }
+
+    // Fallback to default behavior
+    return super.getUIInsertionPoint(contentArea);
+  }
+
   // getWebsiteId(): string {
   //   return "ranobes";
   // }

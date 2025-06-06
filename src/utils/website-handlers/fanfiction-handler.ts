@@ -63,4 +63,34 @@ export class FanfictionHandler extends BaseWebsiteHandler {
     // Fallback to base method
     return super.findContentArea();
   }
+
+  /**
+   * Get ideal insertion point for UI controls
+   * Override from base to provide FanFiction.net-specific placement
+   */
+  override getUIInsertionPoint(contentArea: HTMLElement): {
+    element: HTMLElement;
+    position: "before" | "after" | "inside";
+  } {
+    // For FanFiction.net, try to insert before the story text but after any chapter navigation
+    const storyText = document.querySelector("#storytext") as HTMLElement;
+    if (storyText) {
+      return {
+        element: storyText,
+        position: "before",
+      };
+    }
+
+    // Look for chapter select area to insert after it
+    const chapSelect = document.querySelector("#chap_select") as HTMLElement;
+    if (chapSelect && chapSelect.parentElement) {
+      return {
+        element: chapSelect.parentElement,
+        position: "after",
+      };
+    }
+
+    // Fallback to default behavior
+    return super.getUIInsertionPoint(contentArea);
+  }
 }

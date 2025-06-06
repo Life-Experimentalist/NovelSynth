@@ -4,11 +4,6 @@
   "version": "1.0.0",
   "author": "VKrishna04",
   "homepage_url": "https://life-experimentalist.github.io/novelsynth",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/LifeExperimentalist/novelsynth"
-  },
-  "license": "Apache-2.0",
   "short_name": "NovelSynth",
   "description": "AI-powered content enhancement for web novels, articles, and long-form content",
   "permissions": [
@@ -44,11 +39,15 @@
       "js": [
         "content.js"
       ],
+      "css": [
+        "content.css"
+      ],
       "run_at": "document_end"
     }
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   },
   "web_accessible_resources": [
     {

@@ -88,6 +88,21 @@ export class BaseWebsiteHandler {
   }
 
   /**
+   * Get the ideal insertion point for UI controls
+   * Returns an object with element and position ('before' | 'after' | 'inside')
+   */
+  getUIInsertionPoint(contentArea: HTMLElement): {
+    element: HTMLElement;
+    position: "before" | "after" | "inside";
+  } {
+    // Default: insert before the content area
+    return {
+      element: contentArea,
+      position: "before",
+    };
+  }
+
+  /**
    * Check if element is a valid content area
    */
   private isValidContentArea(element: HTMLElement): boolean {

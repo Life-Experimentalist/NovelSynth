@@ -26,9 +26,9 @@
 - **Terms**: [Terms of Use](./Terms-of-Use) | **Code**: [Code of Conduct](./Code-of-Conduct)
 
 ### 🎯 Project Stats
-- **Version**: 1.0.0 | **Last Updated**: June 6, 2025
+- **Version**: 2.0.0 | **Last Updated**: June 6, 2025
 - **Browsers**: Chrome, Firefox, Edge | **AI Providers**: 5+ Supported
-- **Websites**: 10+ Official Handlers | **License**: Apache-2.0
+- **Websites**: 10+ Official Handlers | **License**: MIT
 ---
 
 <div align="center">

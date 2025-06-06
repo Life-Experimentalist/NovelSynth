@@ -481,4 +481,32 @@ export class StorageManager {
     }
     return Math.abs(hash).toString(16);
   }
+
+  /**
+   * Get the last used actions for chapter enhancement UI
+   */
+  static async getLastUsedActions(): Promise<string[]> {
+    try {
+      const result = await chrome.storage.local.get(
+        "novelsynth_last_used_actions"
+      );
+      return result["novelsynth_last_used_actions"] || ["enhance", "summarize"];
+    } catch (error) {
+      console.error("Failed to get last used actions:", error);
+      return ["enhance", "summarize"];
+    }
+  }
+
+  /**
+   * Set the last used actions for chapter enhancement UI
+   */
+  static async setLastUsedActions(actions: string[]): Promise<void> {
+    try {
+      await chrome.storage.local.set({
+        novelsynth_last_used_actions: actions.slice(0, 2), // Only keep top 2
+      });
+    } catch (error) {
+      console.error("Failed to set last used actions:", error);
+    }
+  }
 }
