@@ -1,24 +1,30 @@
 const path = require("path");
+const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  mode: "development", // Force development mode
+  mode: "development",
+  devtool: "cheap-module-source-map",
   entry: {
-    background: "./src/background.ts",
-    content: "./src/content.ts",
+    popup: path.resolve(__dirname, "src/popup/popup.js"),
+    content: path.resolve(__dirname, "src/content/content.js"),
+    background: path.resolve(__dirname, "src/background.js"),
   },
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "[name].js",
-    clean: true,
   },
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: "ts-loader",
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env", "@babel/preset-react"],
+          },
+        },
       },
       {
         test: /\.css$/,
@@ -27,30 +33,30 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: [".js", ".jsx", ".ts", ".tsx"],
   },
   plugins: [
-    new CopyWebpackPlugin({
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, "src/popup/popup.html"),
+      filename: "popup.html",
+      chunks: ["popup"],
+    }),
+    new CopyPlugin({
       patterns: [
-        { from: "manifest.json", to: "manifest.json" },
-        { from: "src/popup/popup.html", to: "popup.html" },
-        { from: "src/popup/popup.css", to: "popup.css" },
-        { from: "src/popup/popup.js", to: "popup.js" },
-        { from: "src/styles/content.css", to: "content.css" },
+        { from: "manifest.json", to: "." },
+        { from: "src/styles", to: "styles", noErrorOnMissing: true },
+        { from: "src/content/content.css", to: "styles/content.css" },
+        { from: "src/popup/popup.css", to: "styles/popup.css" },
         {
-          from: "src/icons",
-          to: "src/icons",
-          globOptions: {
-            ignore: ["**/icon-dark.png", "**/icon-light.png"],
-          },
+          from: "icons/*.png",
+          to: "icons/[name][ext]",
+        },
+        {
+          from: "icons/*.svg",
+          to: "icons/[name][ext]",
+          noErrorOnMissing: true,
         },
       ],
     }),
   ],
-  performance: {
-    hints: false,
-    maxAssetSize: 512000,
-    maxEntrypointSize: 512000,
-  },
-  devtool: "cheap-module-source-map",
 };

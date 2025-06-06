@@ -1,34 +1,30 @@
-# Node.js dependencies
+# Dependencies
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+.pnpm-debug.log
 
-# Build and Distribution Files
-scripts/dist/
+# Build output
+dist
 build/
-dist/*
-dist/**/*
-*.tgz
+*.zip
 *.crx
-*.xpi
 
-# Runtime files
-*.log
+# IDE files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Environment variables
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# IDE and Editor Files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS Files
+# OS generated files
 .DS_Store
 .DS_Store?
 ._*
@@ -36,100 +32,6 @@ dist/**/*
 .Trashes
 ehthumbs.db
 Thumbs.db
-desktop.ini
 
-# Temporary Files
-tmp/
-temp/
-.tmp
-.temp
-
-# Cache Files
-.cache/
-.parcel-cache/
-
-# Chrome Extension Development
-chrome-extension-key.pem
-*.pem
-
-# Firefox Extension Development
-web-ext-artifacts/
-
-# Testing
+# Test coverage
 coverage/
-.nyc_output/
-
-# Backup Files
-*.bak
-*.backup
-*.old
-
-# Security
-config/keys.json
-config/secrets.json
-*.key
-*.secret
-
-# TypeScript cache
-*.tsbuildinfo
-
-# Webpack bundle analyzer
-bundle-analyzer-report.html
-
-# API keys and secrets (if any test files contain them)
-**/test-keys.json
-**/secrets.json
-
-# Lock files (choose one based on your package manager)
-# package-lock.json  # Uncomment if using yarn
-# yarn.lock          # Uncomment if using npm
-
-# MacOS
-.AppleDouble
-.LSOverride
-
-# Linux
-*~
-
-# JetBrains IDEs
-.idea/
-*.iml
-*.ipr
-*.iws
-
-# Visual Studio Code
-.vscode/
-!.vscode/extensions.json
-!.vscode/settings.json
-
-# Sublime Text
-*.sublime-project
-*.sublime-workspace
-
-# Vim
-*.swp
-*.swo
-*~
-
-# Emacs
-*~
-\#*\#
-/.emacs.desktop
-/.emacs.desktop.lock
-*.elc
-auto-save-list
-tramp
-.\#*
-
-# Browser extension development
-manifest-v2.json
-manifest-firefox.json
-
-# Test outputs
-test-results/
-
-# Documentation build
-docs/_build/
-site/
-
-README_old.md

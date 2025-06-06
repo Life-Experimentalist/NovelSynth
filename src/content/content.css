@@ -1,3 +1,5 @@
+/* NovelSynth Content Styles */
+@import url('./FloatingUI.css');
 /* NovelSynth Content Script Styles */
 
 #novelsynth-fab {
@@ -178,7 +180,23 @@
     font-size: 14px;
 }
 
-/* Dark mode support */
+/* Result container styling */
+.novelsynth-result-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 800px;
+    max-height: 80vh;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
 @media (prefers-color-scheme: dark) {
     .novelsynth-panel {
         background: #1f2937;
@@ -234,6 +252,57 @@
         color: #fca5a5;
         border-color: #dc2626;
     }
+.novelsynth-result-container {
+    background-color: #1f2937;
+    color: #f9fafb;
+}
+
+.novelsynth-result-header {
+    background-color: #111827;
+}
+}
+
+.novelsynth-result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+}
+
+.novelsynth-result-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.novelsynth-result-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.novelsynth-result-close,
+.novelsynth-result-copy {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.novelsynth-result-content {
+    padding: 16px;
+    overflow-y: auto;
+    flex: 1;
+    line-height: 1.5;
+    font-size: 15px;
+    white-space: pre-wrap;
 }
 
 /* Mobile responsiveness */

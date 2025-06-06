@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NovelSynth Floating UI Demo</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+        line-height: 1.6;
+      }
+
+      h1 {
+        color: #4a5db7;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 0.5rem;
+      }
+
+      .demo-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #eee;
+        border-radius: 8px;
+      }
+
+      h2 {
+        margin-top: 0;
+        color: #555;
+      }
+
+      code {
+        background-color: #f5f5f5;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: monospace;
+      }
+
+      .screenshot {
+        max-width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin: 1rem 0;
+      }
+
+      .features {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .features li {
+        margin-bottom: 0.5rem;
+        padding-left: 1.5rem;
+        position: relative;
+      }
+
+      .features li:before {
+        content: "✓";
+        color: #4caf50;
+        position: absolute;
+        left: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>NovelSynth Floating UI Demo</h1>
+
+    <div class="demo-section">
+      <h2>About the Floating UI</h2>
+      <p>
+        The NovelSynth Floating UI provides quick access to AI enhancement
+        features directly on web pages. It appears as a small button in the
+        bottom right corner that expands into a panel with controls.
+      </p>
+
+      <ul class="features">
+        <li>
+          <strong>Draggable:</strong> The button can be moved anywhere on the
+          screen
+        </li>
+        <li>
+          <strong>Context-aware:</strong> Automatically detects the type of
+          content (novels, news, learning)
+        </li>
+        <li>
+          <strong>Quick access:</strong> One-click enhancement, summarization,
+          and analysis
+        </li>
+        <li>
+          <strong>Custom settings:</strong> Adjust temperature, model, and other
+          parameters
+        </li>
+        <li>
+          <strong>Keyboard shortcuts:</strong> Alt+E (enhance), Alt+S
+          (summarize), Alt+A (analyze)
+        </li>
+      </ul>
+    </div>
+
+    <div class="demo-section">
+      <h2>Floating UI Components</h2>
+
+      <h3>Main Button</h3>
+      <p>
+        The floating button appears in the bottom right corner of the page. It
+        can be dragged to any position on the screen.
+      </p>
+
+      <h3>Main Panel</h3>
+      <p>
+        Clicking the button opens a panel with quick actions and settings. The
+        panel includes:
+      </p>
+      <ul>
+        <li>Content type badge (shows detected content type)</li>
+        <li>Action buttons (Enhance, Summarize, Analyze)</li>
+        <li>Quick settings (Temperature, Model)</li>
+        <li>Progress indicator (when processing)</li>
+      </ul>
+
+      <h3>Settings Panel</h3>
+      <p>
+        Clicking the settings icon in the panel header shows the settings view.
+        This includes:
+      </p>
+      <ul>
+        <li>Prompt settings (Content type, Custom prompt)</li>
+        <li>Advanced options (Chunking, Emoji, Max tokens)</li>
+        <li>Link to full settings</li>
+      </ul>
+    </div>
+
+    <div class="demo-section">
+      <h2>Integration with Main Extension</h2>
+      <p>
+        The floating UI complements the main extension popup by providing quick
+        access to the most common features. Settings are synchronized between
+        both interfaces.
+      </p>
+      <p>Key differences:</p>
+      <ul>
+        <li>
+          <strong>Popup UI:</strong> Comprehensive settings, library management,
+          and advanced options
+        </li>
+        <li>
+          <strong>Floating UI:</strong> Quick access to core features with
+          context-specific settings
+        </li>
+      </ul>
+      <p>
+        The floating UI detects the website type and automatically selects the
+        appropriate prompt template, making it easier to get relevant results
+        without manual configuration.
+      </p>
+    </div>
+
+    <div class="demo-section">
+      <h2>Usage Instructions</h2>
+      <ol>
+        <li>Navigate to any website with text content</li>
+        <li>The floating button will appear in the bottom right corner</li>
+        <li>Click the button to open the panel</li>
+        <li>Select an action (Enhance, Summarize, or Analyze)</li>
+        <li>The result will appear in a floating window</li>
+      </ol>
+      <p>You can also use keyboard shortcuts:</p>
+      <ul>
+        <li><code>Alt+E</code>: Enhance content</li>
+        <li><code>Alt+S</code>: Summarize content</li>
+        <li><code>Alt+A</code>: Analyze content</li>
+      </ul>
+    </div>
+  </body>
+</html>

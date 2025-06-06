@@ -1,35 +1,32 @@
 {
   "manifest_version": 3,
   "name": "NovelSynth",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "VKrishna04",
   "homepage_url": "https://life-experimentalist.github.io/novelsynth",
   "short_name": "NovelSynth",
-  "description": "AI-powered content enhancement for web novels, articles, and long-form content",
+  "description": "AI-powered enhancement for web novels, articles, and educational content",
   "permissions": [
-    "activeTab",
     "storage",
+    "activeTab",
     "scripting"
   ],
   "host_permissions": [
-    "https://*/*",
-    "http://*/*"
+    "<all_urls>"
   ],
   "action": {
     "default_popup": "popup.html",
     "default_title": "NovelSynth",
     "default_icon": {
-      "16": "src/icons/icon16.png",
-      "32": "src/icons/icon32.png",
-      "48": "src/icons/icon48.png",
-      "128": "src/icons/icon128.png"
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
     }
   },
   "icons": {
-    "16": "src/icons/icon16.png",
-    "32": "src/icons/icon32.png",
-    "48": "src/icons/icon48.png",
-    "128": "src/icons/icon128.png"
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   },
   "content_scripts": [
     {
@@ -40,9 +37,9 @@
         "content.js"
       ],
       "css": [
-        "content.css"
+        "styles/content.css"
       ],
-      "run_at": "document_end"
+      "run_at": "document_idle"
     }
   ],
   "background": {
@@ -51,11 +48,15 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "src/icons/*"
+        "icons/*",
+        "styles/*"
       ],
       "matches": [
         "<all_urls>"
       ]
     }
-  ]
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  }
 }
