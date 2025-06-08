@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-issue-config.json
+# GitHub Issue Template Configuration
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussions
+    url: https://github.com/Life-Experimentalist/global-save-state/discussions
+    about: Ask questions, share ideas, or discuss the extension
+  - name: 📖 Documentation
+    url: https://github.com/Life-Experimentalist/global-save-state/blob/main/README.md
+    about: Check the documentation for usage help
+  - name: 🏪 VS Code Marketplace
+    url: https://marketplace.visualstudio.com/items?itemName=VKrishna04.global-save-state
+    about: View the extension on VS Code Marketplace

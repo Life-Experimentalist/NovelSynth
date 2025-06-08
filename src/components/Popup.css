@@ -1,0 +1,59 @@
+/* NovelSynth Popup Styles */
+.novelsynth-popup {
+    width: 300px;
+    min-height: 400px;
+    background: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.popup-header {
+    padding: 16px;
+    background: linear-gradient(135deg, #007acc 0%, #0056b3 100%);
+    color: white;
+}
+
+.popup-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.popup-icon {
+    font-size: 18px;
+}
+
+.popup-content {
+    padding: 16px;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popup-footer {
+    text-align: center;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .novelsynth-popup {
+        background: #1f1f1f;
+        color: #fff;
+    }
+
+    .popup-footer {
+        border-top-color: #434343;
+    }
+}

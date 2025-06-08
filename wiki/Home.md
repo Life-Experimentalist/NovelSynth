@@ -4,16 +4,26 @@ Welcome to the comprehensive documentation for **NovelSynth** - the AI-powered b
 
 ## 📋 Table of Contents
 
-1. [Getting Started](#getting-started)
-2. [Installation Guide](#installation-guide)
-3. [User Manual](#user-manual)
-4. [Developer Documentation](#developer-documentation)
-5. [AI Providers & Configuration](#ai-providers--configuration)
-6. [Supported Websites](#supported-websites)
-7. [API Reference](#api-reference)
-8. [Troubleshooting](#troubleshooting)
-9. [Contributing](#contributing)
-10. [Changelog](#changelog)
+1. [Getting Started](#-getting-started)
+   - [What is NovelSynth?](#what-is-novelsynth)
+   - [Key Features](#key-features)
+     - [AI-Powered Enhancement](#-ai-powered-enhancement)
+     - [Smart Website Detection](#-smart-website-detection)
+     - [Persistent Storage](#-persistent-storage)
+     - [Customizable Settings](#-customizable-settings)
+2. [Installation Guide](#-installation-guide)
+3. [User Manual](#-user-manual)
+4. [Developer Documentation](#-developer-documentation)
+5. [AI Providers & Configuration](#-ai-providers--configuration)
+6. [Supported Websites](#-supported-websites)
+7. [API Reference](#-api-reference)
+8. [Troubleshooting](#️-troubleshooting)
+   - [Common Issues](#common-issues)
+   - [Debug Mode](#debug-mode)
+   - [Performance Issues](#performance-issues)
+   - [Getting Help](#getting-help)
+9. [Contributing](#-contributing)
+10. [Changelog](#-changelog)
 
 ---
 
@@ -692,7 +702,7 @@ localStorage.setItem('novelsynth-debug', 'true');
 
 ## 📄 License
 
-NovelSynth is released under the [Apache License 2.0](../LICENSE).
+NovelSynth is released under the [Apache License 2.0](../LICENSE.md).
 
 ## 🙏 Acknowledgments
 

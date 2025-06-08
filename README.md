@@ -1,64 +1,92 @@
-# NovelSynth
+# NovelSynth - AI-Powered Browser Extension
 
-NovelSynth is a browser extension that uses AI to enhance, analyze, and summarize web content, with a special focus on novels, articles, and educational material.
+A modular browser extension for enhancing web novels, articles, and educational content using AI services.
 
 ## Features
 
-- **Content Enhancement**: Improve text quality, readability, and flow
-- **Smart Summarization**: Generate concise summaries of long content
-- **Content Analysis**: Get insights into text structure, complexity, and more
-- **Translation**: Translate content to different languages
-- **History Tracking**: Keep track of your enhancement history per domain
-- **React-based UI**: Modern, responsive interface built with React and Ant Design
+- 🎯 **Modular Architecture**: Easy to add new AI services, content handlers, and features
+- 🚀 **Multiple AI Services**: Support for Gemini, OpenAI, Anthropic (extensible)
+- 📱 **Dual Interface**: Standard popup and floating quick-access popup
+- 🎨 **Modern UI**: Built with React, TypeScript, and Ant Design
+- 🔧 **Customizable Prompts**: Edit prompts for each feature and content type
+- 📝 **Smart Content Detection**: Automatic content type detection for novels, articles, code, etc.
 
-## Development Setup
+## Architecture
 
-1. Clone the repository
-2. Install dependencies:
-   ```
-   npm install
-   ```
-3. Run the development build:
-   ```
-   npm run dev
-   ```
-4. Load the extension from the `dist` folder in your browser
+### Core Components
 
-## Building for Production
+- **AI Services**: Modular AI service handlers (`src/services/ai/`)
+- **Content Handlers**: Website-specific content extractors (`src/services/content/`)
+- **Features**: AI-powered features like enhance, summarize, explain (`src/features/`)
+- **UI Components**: React components for popup and floating interface (`src/popup/`)
+
+### Extension Structure
 
 ```
-npm run build
+src/
+├── types/           # TypeScript interfaces
+├── store/           # Zustand state management
+├── services/
+│   ├── ai/          # AI service implementations
+│   └── content/     # Content extraction handlers
+├── features/        # Feature definitions and registry
+├── popup/           # Main popup interface
+├── content/         # Content script (floating UI + injection)
+└── background/      # Background service worker
 ```
 
-This will create a production-ready build in the `dist` folder.
+## Setup Instructions
 
-## Tech Stack
+### 1. Install Dependencies
 
-- React for UI components
-- Ant Design for UI library
-- Webpack for bundling
-- Chrome Extension APIs
-- CSS for styling
-
-## Folder Structure
-
-```
-novelsynth/
-├── dist/                # Built extension
-├── src/                 # Source code
-│   ├── content/         # Content script
-│   ├── popup/           # Popup UI
-│   ├── utils/           # Utilities
-│   ├── styles/          # CSS styles
-│   ├── background.js    # Background script
-│   ├── popup.js         # Popup entry point
-│   └── popup.html       # Popup HTML
-├── icons/               # Extension icons
-├── manifest.json        # Extension manifest
-├── webpack.config.js    # Webpack configuration
-└── package.json         # Dependencies and scripts
+```bash
+npm install
 ```
 
-## License
+### 2. Development
 
-MIT
+```bash
+# Start development server (for popup testing)
+npm run dev
+
+# Build extension
+npm run build:extension
+
+# Watch mode for development
+npm run watch
+```
+
+### 3. Load Extension
+
+1. Build the extension: `npm run build:extension`
+2. Open Chrome/Edge and go to `chrome://extensions/`
+3. Enable "Developer mode"
+4. Click "Load unpacked" and select the `dist` folder
+
+### 4. Configure AI Services
+
+1. Click the extension icon to open the popup
+2. Go to the "Services" tab
+3. Enter your API key for Gemini (or other services)
+4. Select your preferred model
+
+## Adding New Features
+
+### 1. Create Feature Definition
+
+Add to `src/features/defaults.ts`:
+
+```typescript
+{
+  id: 'my-feature',
+  name: 'My Feature',
+  description: 'What this feature does',
+  icon: '🎯',
+  category: 'enhance',
+  supportedModes: ['novel', 'article'],
+  defaultPrompts: {
+    novel: 'Prompt for novel content...',
+    article: 'Prompt for article content...',
+    // ... other modes
+  },
+  config: {

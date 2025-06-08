@@ -1,0 +1,80 @@
+{
+    "manifest_version": 3,
+    "name": "NovelSynth",
+    "version": "2.0.0",
+    "author": "VKrishna04",
+    "homepage_url": "https://life-experimentalist.github.io/novelsynth",
+    "short_name": "NovelSynth",
+    "description": "AI-powered enhancement for web novels, articles, and educational content",
+    "permissions": [
+        "storage",
+        "activeTab",
+        "scripting",
+        "tabs"
+    ],
+    "host_permissions": [
+        "*://*/*"
+    ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "NovelSynth",
+        "default_icon": {
+            "16": "icons/icon-light-16.png",
+            "32": "icons/icon-light-32.png",
+            "48": "icons/icon-light-48.png",
+            "128": "icons/icon-light-128.png"
+        }
+    },
+    "icons": {
+        "16": "icons/icon-light-16.png",
+        "32": "icons/icon-light-32.png",
+        "48": "icons/icon-light-48.png",
+        "128": "icons/icon-light-128.png"
+    },
+    "background": {
+        "service_worker": "background.js",
+        "type": "module"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://fanfiction.net/*",
+                "https://www.fanfiction.net/*",
+                "https://m.fanfiction.net/*",
+                "https://archiveofourown.org/*",
+                "https://royalroad.com/*",
+                "https://www.royalroad.com/*",
+                "https://webnovel.com/*",
+                "https://www.webnovel.com/*",
+                "https://wattpad.com/*",
+                "https://www.wattpad.com/*",
+                "http://localhost:*/*",
+                "https://medium.com/*",
+                "https://dev.to/*",
+                "https://stackoverflow.com/*"
+            ],
+            "js": [
+                "content.js"
+            ],
+            "run_at": "document_end"
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "icons/*",
+                "popup/*",
+                "./*"
+            ],
+            "matches": [
+                "*://*/*"
+            ]
+        }
+    ],
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "novelsynth@vkrishna04.dev",
+            "strict_min_version": "109.0"
+        }
+    }
+}
