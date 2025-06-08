@@ -305,8 +305,8 @@ class FeatureRegistry {
         baseUrl: "https://generativelanguage.googleapis.com/v1beta",
         models: [
           {
-            id: "gemini-1.5-flash",
-            name: "gemini-1.5-flash",
+            id: "gemini-2.0-flash",
+            name: "gemini-2.0-flash",
             displayName: "Gemini 1.5 Flash",
             maxTokens: 1048576,
             capabilities: [

@@ -60,7 +60,7 @@ export class GeminiService extends BaseAIService {
         "gemini-pro",
         "gemini-pro-vision",
         "gemini-1.5-pro",
-        "gemini-1.5-flash",
+        "gemini-2.0-flash",
       ];
     } catch (error) {
       console.warn("Failed to fetch available Gemini models:", error);

@@ -167,8 +167,8 @@ export const AIProviderSettings: React.FC = () => {
         if (providerId === "gemini") {
           const fallbackModels = [
             {
-              id: "gemini-1.5-flash",
-              name: "gemini-1.5-flash",
+              id: "gemini-2.0-flash",
+              name: "gemini-2.0-flash",
               displayName: "Gemini 1.5 Flash",
               maxTokens: 1048576,
               capabilities: [ModelCapability.TEXT_GENERATION],
@@ -445,8 +445,8 @@ async function fetchAvailableModels(
     if (providerId === "gemini") {
       return [
         {
-          id: "gemini-1.5-flash",
-          name: "gemini-1.5-flash",
+          id: "gemini-2.0-flash",
+          name: "gemini-2.0-flash",
           displayName: "Gemini 1.5 Flash",
           maxTokens: 1048576,
           capabilities: [

@@ -9,7 +9,7 @@ import type { ContentMode } from "@/types";
 export const CONTENT_MODES = {
   NOVEL: "novel" as ContentMode,
   NEWS: "news" as ContentMode,
-  LEARNING: "learning" as ContentMode,
+  EDUCATIONAL: "educational" as ContentMode,
   TECHNICAL: "technical" as ContentMode,
   ARTICLE: "article" as ContentMode,
 } as const;
@@ -33,6 +33,8 @@ export const WEBSITE_HANDLERS = {
     "theguardian.com",
     "nytimes.com",
     "washingtonpost.com",
+    "npr.org",
+    "apnews.com",
   ],
   learning: [
     "wikipedia.org",
@@ -41,6 +43,8 @@ export const WEBSITE_HANDLERS = {
     "edx.org",
     "udemy.com",
     "stackoverflow.com",
+    "medium.com",
+    "dev.to",
   ],
   technical: [
     "github.com",
@@ -48,6 +52,7 @@ export const WEBSITE_HANDLERS = {
     "developer.mozilla.org",
     "docs.microsoft.com",
     "readthedocs.io",
+    "devdocs.io",
   ],
 } as const;
 
@@ -56,89 +61,49 @@ export const DEFAULT_MODEL_SETTINGS = {
   enhance: {
     temperature: 0.7,
     maxTokens: 8192,
-    model: "gemini-1.5-flash",
+    model: "gemini-2.0-flash",
   },
   analyze: {
     temperature: 0.3,
     maxTokens: 4096,
-    model: "gemini-1.5-flash",
+    model: "gemini-2.0-flash",
   },
   summarize: {
     temperature: 0.5,
     maxTokens: 2048,
-    model: "gemini-1.5-flash",
+    model: "gemini-2.0-flash",
   },
   suggestions: {
     temperature: 0.8,
     maxTokens: 4096,
-    model: "gemini-1.5-flash",
+    model: "gemini-2.0-flash",
   },
 } as const;
 
 // Complete Gemini model list for dynamic selection
 export const GEMINI_MODELS = [
   {
-    id: "gemini-1.5-flash",
-    name: "Gemini 1.5 Flash",
+    id: "gemini-2.0-flash",
+    name: "Gemini 2.0 Flash",
     description: "Fast and efficient model for most tasks",
     maxTokens: 1048576, // 1M tokens
     contextWindow: 1000000,
     recommended: true,
   },
   {
-    id: "gemini-1.5-flash-8b",
-    name: "Gemini 1.5 Flash 8B",
-    description: "Smaller, faster version of Flash model",
-    maxTokens: 1048576,
+    id: "gemini-1.5-pro",
+    name: "Gemini 1.5 Pro",
+    description: "Best model for complex reasoning and creative tasks",
+    maxTokens: 1048576, // 1M tokens
     contextWindow: 1000000,
     recommended: false,
   },
   {
-    id: "gemini-1.5-pro",
-    name: "Gemini 1.5 Pro",
-    description: "Most capable model for complex reasoning tasks",
-    maxTokens: 2097152, // 2M tokens
-    contextWindow: 2000000,
-    recommended: true,
-  },
-  {
-    id: "gemini-1.5-pro-002",
-    name: "Gemini 1.5 Pro 002",
-    description: "Latest version of Pro model with improved capabilities",
-    maxTokens: 2097152,
-    contextWindow: 2000000,
-    recommended: true,
-  },
-  {
-    id: "gemini-1.0-pro",
-    name: "Gemini 1.0 Pro",
-    description: "Previous generation model (legacy)",
-    maxTokens: 30720,
-    contextWindow: 30720,
-    recommended: false,
-  },
-  {
-    id: "gemini-1.0-pro-vision",
-    name: "Gemini 1.0 Pro Vision",
-    description: "Multimodal model that can process images (legacy)",
-    maxTokens: 30720,
-    contextWindow: 30720,
-    recommended: false,
-  },
-  {
-    id: "gemini-exp-1114",
-    name: "Gemini Experimental 1114",
-    description: "Experimental model with latest features",
-    maxTokens: 2097152,
-    contextWindow: 2000000,
-    recommended: false,
-  },
-  {
-    id: "gemini-exp-1121",
-    name: "Gemini Experimental 1121",
-    description: "Latest experimental model",
-    maxTokens: 2097152,
-    contextWindow: 2000000,
+    id: "gemini-2.0-flash-8b",
+    name: "Gemini 2.0 Flash 8B",
+    description: "Experimental model for testing purposes",
+    maxTokens: 2048,
+    contextWindow: 2048,
     recommended: false,
   },
 ] as const;
@@ -286,7 +251,7 @@ Focus on actionable improvements for professional journalism.`,
 } as const;
 
 // Learning-specific prompts
-export const LEARNING_PROMPTS = {
+export const EDUCATIONAL_PROMPTS = {
   enhance: `Please enhance this educational content with the following improvements:
 
 1. Improve clarity and pedagogical structure
@@ -451,7 +416,7 @@ Focus on constructive improvements for better articles.`,
 export const CONTENT_TYPE_PROMPTS = {
   novel: NOVEL_PROMPTS,
   news: NEWS_PROMPTS,
-  learning: LEARNING_PROMPTS,
+  educational: EDUCATIONAL_PROMPTS,
   technical: TECHNICAL_PROMPTS,
   article: ARTICLE_PROMPTS,
 } as const;
@@ -459,33 +424,57 @@ export const CONTENT_TYPE_PROMPTS = {
 // Model recommendations by content type
 export const CONTENT_TYPE_MODEL_RECOMMENDATIONS = {
   novel: {
-    enhance: ["gemini-1.5-pro", "gemini-1.5-flash"],
-    analyze: ["gemini-1.5-pro", "gemini-1.5-flash"],
-    summarize: ["gemini-1.5-flash", "gemini-1.5-flash-8b"],
-    suggestions: ["gemini-1.5-pro", "gemini-1.5-flash"],
+    enhance: ["gemini-1.5-pro", "gemini-2.0-flash"],
+    analyze: ["gemini-1.5-pro", "gemini-2.0-flash"],
+    summarize: ["gemini-2.0-flash", "gemini-2.0-flash-8b"],
+    suggestions: ["gemini-1.5-pro", "gemini-2.0-flash"],
   },
   news: {
-    enhance: ["gemini-1.5-flash", "gemini-1.5-pro"],
-    analyze: ["gemini-1.5-pro", "gemini-1.5-flash"],
-    summarize: ["gemini-1.5-flash", "gemini-1.5-flash-8b"],
-    suggestions: ["gemini-1.5-flash", "gemini-1.5-pro"],
+    enhance: ["gemini-2.0-flash", "gemini-1.5-pro"],
+    analyze: ["gemini-1.5-pro", "gemini-2.0-flash"],
+    summarize: ["gemini-2.0-flash", "gemini-2.0-flash-8b"],
+    suggestions: ["gemini-2.0-flash", "gemini-1.5-pro"],
   },
-  learning: {
-    enhance: ["gemini-1.5-pro", "gemini-1.5-flash"],
-    analyze: ["gemini-1.5-pro", "gemini-1.5-flash"],
-    summarize: ["gemini-1.5-flash", "gemini-1.5-flash-8b"],
-    suggestions: ["gemini-1.5-pro", "gemini-1.5-flash"],
+  educational: {
+    enhance: ["gemini-1.5-pro", "gemini-2.0-flash"],
+    analyze: ["gemini-1.5-pro", "gemini-2.0-flash"],
+    summarize: ["gemini-2.0-flash", "gemini-2.0-flash-8b"],
+    suggestions: ["gemini-1.5-pro", "gemini-2.0-flash"],
   },
   technical: {
-    enhance: ["gemini-1.5-pro", "gemini-1.5-flash"],
-    analyze: ["gemini-1.5-pro", "gemini-1.5-flash"],
-    summarize: ["gemini-1.5-flash", "gemini-1.5-flash-8b"],
-    suggestions: ["gemini-1.5-pro", "gemini-1.5-flash"],
+    enhance: ["gemini-1.5-pro", "gemini-2.0-flash"],
+    analyze: ["gemini-1.5-pro", "gemini-2.0-flash"],
+    summarize: ["gemini-2.0-flash", "gemini-2.0-flash-8b"],
+    suggestions: ["gemini-1.5-pro", "gemini-2.0-flash"],
   },
   article: {
-    enhance: ["gemini-1.5-flash", "gemini-1.5-pro"],
-    analyze: ["gemini-1.5-pro", "gemini-1.5-flash"],
-    summarize: ["gemini-1.5-flash", "gemini-1.5-flash-8b"],
-    suggestions: ["gemini-1.5-flash", "gemini-1.5-pro"],
+    enhance: ["gemini-2.0-flash", "gemini-1.5-pro"],
+    analyze: ["gemini-1.5-pro", "gemini-2.0-flash"],
+    summarize: ["gemini-2.0-flash", "gemini-2.0-flash-8b"],
+    suggestions: ["gemini-2.0-flash", "gemini-1.5-pro"],
   },
+} as const;
+
+// Feature categories
+export const FEATURE_CATEGORIES = {
+  ENHANCE: "enhance",
+  ANALYZE: "analyze",
+  TRANSFORM: "transform",
+  UTILITY: "utility",
+} as const;
+
+// AI Service providers
+export const AI_PROVIDERS = {
+  GEMINI: "gemini",
+  OPENAI: "openai",
+  ANTHROPIC: "anthropic",
+} as const;
+
+// Extension settings
+export const EXTENSION_SETTINGS = {
+  MAX_RECENT_FEATURES: 5,
+  DEFAULT_TIMEOUT: 30000, // 30 seconds
+  RATE_LIMIT_DELAY: 1000, // 1 second
+  MAX_CONTENT_LENGTH: 25000,
+  CHUNK_SIZE: 2000,
 } as const;

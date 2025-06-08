@@ -37,7 +37,7 @@ async function testRealAPIKeys() {
         console.log("🌐 Making API request...");
         const genAI = new GoogleGenerativeAI(apiKey.trim());
         const model = genAI.getGenerativeModel({
-          model: "gemini-1.5-flash",
+          model: "gemini-2.0-flash",
           generationConfig: {
             maxOutputTokens: 5,
             temperature: 0,

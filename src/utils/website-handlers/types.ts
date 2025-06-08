@@ -91,6 +91,41 @@ export interface ContentMetadata {
 }
 
 /**
+ * Extended metadata interface for webpage details display
+ */
+export interface WebsiteMetadata extends ContentMetadata {
+  /** Page URL */
+  url: string;
+  /** Website name */
+  siteName?: string;
+  /** Last modified date */
+  lastModified?: string;
+  /** Publication date as ISO string */
+  publishedDate?: string;
+
+  // Novel/Fanfiction specific
+  /** Story title (may differ from chapter title) */
+  storyTitle?: string;
+  /** Current chapter number */
+  chapterNumber?: number;
+  /** Total number of chapters */
+  totalChapters?: number;
+  /** Story completion status */
+  status?: 'complete' | 'in-progress' | 'hiatus' | 'abandoned';
+  /** Fandom or universe */
+  fandom?: string;
+  /** Character names or pairings */
+  characters?: string;
+
+  /** Content tags */
+  tags?: string[];
+  /** Canonical URL */
+  canonicalUrl?: string;
+  /** Featured image URL */
+  image?: string;
+}
+
+/**
  * Content extraction result
  */
 export interface ContentExtractionResult {

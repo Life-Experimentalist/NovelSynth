@@ -12,6 +12,7 @@ import {
   ContentType,
   ContentQuality,
   ContentValidation,
+  WebsiteMetadata,
 } from "./types";
 
 export class FanfictionHandler extends BaseWebsiteHandler {
@@ -315,6 +316,167 @@ export class FanfictionHandler extends BaseWebsiteHandler {
       }
     } catch (error) {
       console.error("Error extracting FF.net metadata:", error);
+    }
+  }
+
+  /**
+   * Extract detailed metadata specifically for WebpageDetails component
+   */
+  private extractDetailedMetadata(): WebsiteMetadata {
+    const metadata: WebsiteMetadata = {
+      title: document.title,
+      url: window.location.href,
+      siteName: "FanFiction.Net",
+    };
+
+    try {
+      // Extract story title from the main title element
+      const storyTitleElement = document.querySelector(
+        "#profile_top b.xcontrast_txt"
+      );
+      if (storyTitleElement) {
+        metadata.storyTitle = storyTitleElement.textContent?.trim();
+      }
+
+      // Extract chapter title and number from chapter selector
+      const chapterSelect = document.getElementById(
+        "chap_select"
+      ) as HTMLSelectElement;
+      if (chapterSelect) {
+        const selectedOption = chapterSelect.querySelector(
+          "option[selected]"
+        ) as HTMLOptionElement;
+        if (selectedOption) {
+          const chapterText = selectedOption.textContent?.trim();
+          const chapterMatch = chapterText?.match(/(\d+)\.\s*(.+)/);
+          if (chapterMatch) {
+            metadata.chapterNumber = parseInt(chapterMatch[1]);
+            metadata.title = chapterMatch[2]; // Chapter title
+          }
+        }
+      } else {
+        // Try to extract from URL if no selector found
+        const urlMatch = window.location.href.match(/\/s\/\d+\/(\d+)\//);
+        if (urlMatch) {
+          metadata.chapterNumber = parseInt(urlMatch[1]);
+        }
+      }
+
+      // Extract author
+      const authorElement = document.querySelector(
+        '#profile_top a[href*="/u/"]'
+      );
+      if (authorElement) {
+        metadata.author = authorElement.textContent?.trim();
+      }
+
+      // Extract story description
+      const descriptionElement = document.querySelector("#summary");
+      if (descriptionElement) {
+        metadata.description = descriptionElement.textContent?.trim();
+      }
+
+      // Extract story metadata from the gray info section
+      const storyInfoElement = document.querySelector("#profile_top .xgray");
+      if (storyInfoElement) {
+        const infoText = storyInfoElement.textContent || "";
+
+        // Extract rating
+        const ratingMatch = infoText.match(/Rated:\s*(\w+)/);
+        if (ratingMatch) {
+          metadata.rating = ratingMatch[1];
+        }
+
+        // Extract language
+        const languageMatch = infoText.match(/Language:\s*(\w+)/);
+        if (languageMatch) {
+          metadata.language = languageMatch[1];
+        }
+
+        // Extract genres
+        const genreMatch = infoText.match(/Genre:\s*([^-]+?)(?:\s*-|$)/);
+        if (genreMatch) {
+          metadata.genres = genreMatch[1].split("/").map((g) => g.trim());
+        }
+
+        // Extract word count
+        const wordsMatch = infoText.match(/Words:\s*([\d,]+)/);
+        if (wordsMatch) {
+          metadata.wordCount = parseInt(wordsMatch[1].replace(/,/g, ""));
+        }
+
+        // Extract chapter count
+        const chaptersMatch = infoText.match(/Chapters:\s*(\d+)/);
+        if (chaptersMatch) {
+          metadata.totalChapters = parseInt(chaptersMatch[1]);
+        }
+
+        // Extract published date
+        const publishedMatch = infoText.match(
+          /Published:\s*([^-]+?)(?:\s*-|$)/
+        );
+        if (publishedMatch) {
+          const dateStr = publishedMatch[1].trim();
+          const parsedDate = this.parseFanFictionDate(dateStr);
+          if (parsedDate) {
+            metadata.publishedDate = parsedDate.toISOString();
+          }
+        }
+
+        // Extract updated date
+        const updatedMatch = infoText.match(/Updated:\s*([^-]+?)(?:\s*-|$)/);
+        if (updatedMatch) {
+          const dateStr = updatedMatch[1].trim();
+          const parsedDate = this.parseFanFictionDate(dateStr);
+          if (parsedDate) {
+            metadata.lastModified = parsedDate.toISOString();
+          }
+        }
+
+        // Determine status
+        if (metadata.totalChapters && metadata.chapterNumber) {
+          metadata.status =
+            metadata.chapterNumber >= metadata.totalChapters
+              ? "complete"
+              : "in-progress";
+        } else if (infoText.includes("Complete")) {
+          metadata.status = "complete";
+        } else {
+          metadata.status = "in-progress";
+        }
+      }
+
+      // Extract fandom from breadcrumbs or page structure
+      const fandomElement = document.querySelector(
+        "#pre_story_links a:first-child"
+      );
+      if (fandomElement) {
+        metadata.fandom = fandomElement.textContent?.trim();
+      } else {
+        // Fallback: extract from page title
+        const titleParts = document.title.split("|");
+        if (titleParts.length > 1) {
+          metadata.fandom = titleParts[titleParts.length - 1].trim();
+        }
+      }
+    } catch (error) {
+      console.error(
+        "Error extracting FanFiction.net detailed metadata:",
+        error
+      );
+    }
+
+    return metadata;
+  }
+
+  private parseFanFictionDate(dateStr: string): Date | null {
+    try {
+      // FanFiction.net uses various date formats
+      // Common formats: "Dec 25, 2023", "12/25/2023", "25-Dec-23"
+      const date = new Date(dateStr);
+      return isNaN(date.getTime()) ? null : date;
+    } catch {
+      return null;
     }
   }
 

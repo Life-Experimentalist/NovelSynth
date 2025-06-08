@@ -90,3 +90,19 @@ Add to `src/features/defaults.ts`:
     // ... other modes
   },
   config: {
+    serviceId: 'gemini', // or 'openai', 'anthropic', etc.
+    modelId: 'gemini-2.0-flash',
+    customPrompts: {
+      novel: '',
+      article: '',
+      // ... other modes
+    },
+    customSystemPrompts: {
+      novel: '',
+      article: '',
+      // ... other modes
+    },
+    enabled: true,
+  },
+},
+```

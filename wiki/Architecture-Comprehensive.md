@@ -325,7 +325,7 @@ graph TB
     subgraph "🟦 Google Gemini Integration"
         direction LR
         GC[🔗 Gemini Client<br/>@google/generative-ai]
-        GM[🧠 Model Selection<br/>• gemini-1.5-pro<br/>• gemini-1.5-flash<br/>• Context optimization]
+        GM[🧠 Model Selection<br/>• gemini-1.5-pro<br/>• gemini-2.0-flash<br/>• Context optimization]
         GS[📡 Streaming Handler<br/>• Real-time responses<br/>• Progressive display<br/>• Error recovery]
     end
 

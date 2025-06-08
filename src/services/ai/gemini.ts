@@ -33,7 +33,7 @@ export class GeminiService extends BaseAIService {
 
       // Use the latest available model for validation
       const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash", // Use newer model that's more likely to work
+        model: "gemini-2.0-flash", // Use newer model that's more likely to work
         generationConfig: {
           maxOutputTokens: 5, // Very minimal response for validation
           temperature: 0,
@@ -121,14 +121,12 @@ export class GeminiService extends BaseAIService {
     }
 
     try {
-      console.log("🔍 Fetching available Gemini models...");
-
-      // Try to fetch available models from the API
+      console.log("🔍 Fetching available Gemini models...");      // Try to fetch available models from the API
       // Note: Google Generative AI library doesn't expose listModels directly in the browser client
       // So we'll use the known available models with API validation
       const knownModels: AIModel[] = [
         {
-          id: "gemini-1.5-flash",
+          id: "gemini-2.0-flash",
           name: "Gemini 1.5 Flash",
           description: "Fast and efficient model for most tasks",
           maxTokens: 1048576, // 1M tokens
@@ -142,9 +140,23 @@ export class GeminiService extends BaseAIService {
           ],
         },
         {
-          id: "gemini-1.5-flash-8b",
+          id: "gemini-2.0-flash-8b",
           name: "Gemini 1.5 Flash 8B",
           description: "Smaller, faster version of Flash model",
+          maxTokens: 1048576,
+          supportedModes: [
+            "novel",
+            "article",
+            "news",
+            "educational",
+            "code",
+            "general",
+          ],
+        },
+        {
+          id: "gemini-2.0-flash-latest",
+          name: "Gemini 1.5 Flash (Latest)",
+          description: "Latest stable version of Flash model",
           maxTokens: 1048576,
           supportedModes: [
             "novel",
@@ -160,6 +172,62 @@ export class GeminiService extends BaseAIService {
           name: "Gemini 1.5 Pro",
           description: "Most capable model for complex reasoning tasks",
           maxTokens: 2097152, // 2M tokens
+          supportedModes: [
+            "novel",
+            "article",
+            "news",
+            "educational",
+            "code",
+            "general",
+          ],
+        },
+        {
+          id: "gemini-1.5-pro-latest",
+          name: "Gemini 1.5 Pro (Latest)",
+          description: "Latest stable version of Pro model",
+          maxTokens: 2097152,
+          supportedModes: [
+            "novel",
+            "article",
+            "news",
+            "educational",
+            "code",
+            "general",
+          ],
+        },
+        {
+          id: "gemini-1.5-pro-exp-0801",
+          name: "Gemini 1.5 Pro Experimental",
+          description: "Experimental version with cutting-edge features",
+          maxTokens: 2097152,
+          supportedModes: [
+            "novel",
+            "article",
+            "news",
+            "educational",
+            "code",
+            "general",
+          ],
+        },
+        {
+          id: "gemini-1.5-pro-exp-0827",
+          name: "Gemini 1.5 Pro Experimental (0827)",
+          description: "Latest experimental build",
+          maxTokens: 2097152,
+          supportedModes: [
+            "novel",
+            "article",
+            "news",
+            "educational",
+            "code",
+            "general",
+          ],
+        },
+        {
+          id: "gemini-1.0-pro",
+          name: "Gemini 1.0 Pro",
+          description: "First generation Gemini model",
+          maxTokens: 30720,
           supportedModes: [
             "novel",
             "article",
@@ -237,7 +305,7 @@ export class GeminiService extends BaseAIService {
       // Return basic fallback models
       const fallbackModels: AIModel[] = [
         {
-          id: "gemini-1.5-flash",
+          id: "gemini-2.0-flash",
           name: "Gemini 1.5 Flash",
           description: "Fast and efficient model for most tasks",
           maxTokens: 1048576,

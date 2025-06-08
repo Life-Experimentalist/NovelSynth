@@ -343,7 +343,7 @@ npm run lint         # Code quality checks
 
 **Supported Models:**
 - `gemini-1.5-pro`: Best for complex content enhancement
-- `gemini-1.5-flash`: Faster processing, good for summaries
+- `gemini-2.0-flash`: Faster processing, good for summaries
 - `gemini-pro`: Standard model for general use
 - `gemini-pro-vision`: Image and text processing (future feature)
 
@@ -576,7 +576,7 @@ localStorage.setItem('novelsynth-debug', 'true');
 ### Performance Issues
 
 #### **Slow Processing**
-1. Switch to faster AI model (e.g., `gemini-1.5-flash`)
+1. Switch to faster AI model (e.g., `gemini-2.0-flash`)
 2. Reduce content chunk size in settings
 3. Check system resources and close unnecessary tabs
 4. Clear extension storage if full
